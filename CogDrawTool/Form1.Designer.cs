@@ -57,6 +57,10 @@ namespace CogDrawTool
             this.btnTest = new System.Windows.Forms.Button();
             this.UpDownLineWidth = new System.Windows.Forms.NumericUpDown();
             this.imageList1 = new System.Windows.Forms.ImageList(this.components);
+            this.btnTest2 = new System.Windows.Forms.Button();
+            this.btnTest3 = new System.Windows.Forms.Button();
+            this.btnArrow = new System.Windows.Forms.ToolStripButton();
+            this.numericUpDownTest = new System.Windows.Forms.NumericUpDown();
             ((System.ComponentModel.ISupportInitialize)(this.cogDisplay1)).BeginInit();
             this.toolStrip1.SuspendLayout();
             this.panel1.SuspendLayout();
@@ -65,6 +69,7 @@ namespace CogDrawTool
             ((System.ComponentModel.ISupportInitialize)(this.dGVDefectList)).BeginInit();
             this.groupBox1.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.UpDownLineWidth)).BeginInit();
+            ((System.ComponentModel.ISupportInitialize)(this.numericUpDownTest)).BeginInit();
             this.SuspendLayout();
             // 
             // cogDisplay1
@@ -84,6 +89,8 @@ namespace CogDrawTool
             this.cogDisplay1.OcxState = ((System.Windows.Forms.AxHost.State)(resources.GetObject("cogDisplay1.OcxState")));
             this.cogDisplay1.Size = new System.Drawing.Size(746, 626);
             this.cogDisplay1.TabIndex = 1;
+            this.cogDisplay1.MouseDown += new System.Windows.Forms.MouseEventHandler(this.cogDisplay1_MouseDown);
+            this.cogDisplay1.MouseMove += new System.Windows.Forms.MouseEventHandler(this.cogDisplay1_MouseMove);
             // 
             // cogDisplayStatusBarV21
             // 
@@ -114,7 +121,8 @@ namespace CogDrawTool
             this.BtnRect,
             this.BtnAnnotation,
             this.BtnPoint,
-            this.BtnLine});
+            this.BtnLine,
+            this.btnArrow});
             this.toolStrip1.Location = new System.Drawing.Point(0, 0);
             this.toolStrip1.Name = "toolStrip1";
             this.toolStrip1.Size = new System.Drawing.Size(76, 736);
@@ -281,7 +289,7 @@ namespace CogDrawTool
             // 
             // btnRefresh
             // 
-            this.btnRefresh.Location = new System.Drawing.Point(946, 375);
+            this.btnRefresh.Location = new System.Drawing.Point(946, 400);
             this.btnRefresh.Name = "btnRefresh";
             this.btnRefresh.Size = new System.Drawing.Size(75, 23);
             this.btnRefresh.TabIndex = 12;
@@ -311,7 +319,7 @@ namespace CogDrawTool
             // 
             // btnTest
             // 
-            this.btnTest.Location = new System.Drawing.Point(946, 346);
+            this.btnTest.Location = new System.Drawing.Point(899, 317);
             this.btnTest.Name = "btnTest";
             this.btnTest.Size = new System.Drawing.Size(75, 23);
             this.btnTest.TabIndex = 15;
@@ -332,11 +340,65 @@ namespace CogDrawTool
             this.imageList1.ImageSize = new System.Drawing.Size(16, 16);
             this.imageList1.TransparentColor = System.Drawing.Color.Transparent;
             // 
+            // btnTest2
+            // 
+            this.btnTest2.Location = new System.Drawing.Point(985, 317);
+            this.btnTest2.Name = "btnTest2";
+            this.btnTest2.Size = new System.Drawing.Size(75, 23);
+            this.btnTest2.TabIndex = 17;
+            this.btnTest2.Text = "Test 2";
+            this.btnTest2.UseVisualStyleBackColor = true;
+            this.btnTest2.Click += new System.EventHandler(this.btnTest2_Click);
+            // 
+            // btnTest3
+            // 
+            this.btnTest3.Location = new System.Drawing.Point(946, 346);
+            this.btnTest3.Name = "btnTest3";
+            this.btnTest3.Size = new System.Drawing.Size(75, 23);
+            this.btnTest3.TabIndex = 18;
+            this.btnTest3.Text = "Test 3";
+            this.btnTest3.UseVisualStyleBackColor = true;
+            this.btnTest3.Click += new System.EventHandler(this.btnTest3_Click);
+            // 
+            // btnArrow
+            // 
+            this.btnArrow.Image = ((System.Drawing.Image)(resources.GetObject("btnArrow.Image")));
+            this.btnArrow.ImageTransparentColor = System.Drawing.Color.Magenta;
+            this.btnArrow.Name = "btnArrow";
+            this.btnArrow.Size = new System.Drawing.Size(73, 24);
+            this.btnArrow.Text = "Arrow";
+            this.btnArrow.Click += new System.EventHandler(this.btnArrow_Click);
+            // 
+            // numericUpDownTest
+            // 
+            this.numericUpDownTest.Increment = new decimal(new int[] {
+            10,
+            0,
+            0,
+            0});
+            this.numericUpDownTest.Location = new System.Drawing.Point(919, 289);
+            this.numericUpDownTest.Maximum = new decimal(new int[] {
+            1000,
+            0,
+            0,
+            0});
+            this.numericUpDownTest.Minimum = new decimal(new int[] {
+            1000,
+            0,
+            0,
+            -2147483648});
+            this.numericUpDownTest.Name = "numericUpDownTest";
+            this.numericUpDownTest.Size = new System.Drawing.Size(120, 22);
+            this.numericUpDownTest.TabIndex = 19;
+            // 
             // DrawToolFrm
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(8F, 16F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.ClientSize = new System.Drawing.Size(1779, 736);
+            this.Controls.Add(this.numericUpDownTest);
+            this.Controls.Add(this.btnTest3);
+            this.Controls.Add(this.btnTest2);
             this.Controls.Add(this.UpDownLineWidth);
             this.Controls.Add(this.btnTest);
             this.Controls.Add(this.btnImport);
@@ -359,6 +421,7 @@ namespace CogDrawTool
             ((System.ComponentModel.ISupportInitialize)(this.dGVDefectList)).EndInit();
             this.groupBox1.ResumeLayout(false);
             ((System.ComponentModel.ISupportInitialize)(this.UpDownLineWidth)).EndInit();
+            ((System.ComponentModel.ISupportInitialize)(this.numericUpDownTest)).EndInit();
             this.ResumeLayout(false);
             this.PerformLayout();
 
@@ -391,6 +454,10 @@ namespace CogDrawTool
         private System.Windows.Forms.Button btnTest;
         private System.Windows.Forms.NumericUpDown UpDownLineWidth;
         private System.Windows.Forms.ImageList imageList1;
+        private System.Windows.Forms.Button btnTest2;
+        private System.Windows.Forms.Button btnTest3;
+        private System.Windows.Forms.ToolStripButton btnArrow;
+        private System.Windows.Forms.NumericUpDown numericUpDownTest;
     }
 }
 

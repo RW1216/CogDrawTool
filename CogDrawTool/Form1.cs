@@ -1,11 +1,12 @@
 ﻿using Cognex.VisionPro;
 using Cognex.VisionPro.Display;
+using Cognex.VisionPro.Implementation;
 using CsvHelper;
 using System;
 using System.Collections.Generic;
 using System.ComponentModel;
 using System.Data;
-using System.Drawing;
+
 using System.Drawing.Drawing2D;
 using System.Globalization;
 using System.IO;
@@ -15,7 +16,11 @@ using System.Text;
 using System.Threading.Tasks;
 using System.Windows;
 using System.Windows.Forms;
+using System.Drawing;
 //using System.Windows.Media;
+using System.Xml.Serialization;
+using System.Xml.Linq;
+using QWhale.Editor.TextSource;
 
 namespace CogDrawTool
 {
@@ -24,11 +29,17 @@ namespace CogDrawTool
         private DataTable defectTable;
         private String defectCategory;
         private String _path = "C:/Users/ryuya/Downloads";
+        private List<Arrow> arrowList = new List<Arrow>();
+
+        //If arrow is selected during mouse down
+        private bool arrowSelected = false;
+        private int selectedArrowIndex;
+        private CogLineSegment graphicSelected;
 
         public delegate void DisplayImageDelegate(Bitmap frameBuffer);
 
         //Test variables
-        private List<CogCompositeShape> compositeShapeList = new List<CogCompositeShape>();
+        CogCompositeShape shapesContainer = new CogCompositeShape();
 
         //Not used
         private List<CogRectangleAffine> listDefectList;
@@ -36,59 +47,86 @@ namespace CogDrawTool
         private List<CogPointMarker> pointList;
         private List<CogLineSegment> lineList;
         private List<CogCompositeShape> tempDefectList = new List<CogCompositeShape>();
+        CogCompositeShape shapes = new CogCompositeShape();
 
         public DrawToolFrm()
         {
             InitializeComponent();
         }
 
-        private void onPaint(object sender, PaintEventArgs e)
+        private void btnArrow_Click(object sender, EventArgs e)
         {
-            //Point[] point = new Point[8];
-            GraphicsPath path = new GraphicsPath();
-            path.AddLine(new PointF(100, 100), new PointF(200, 200));
-            path.AddArc(new Rectangle(new System.Drawing.Point(1, 1), new System.Drawing.Size(20, 20)),
-                90, 90);
+            Arrow arrow = new Arrow();
+            arrow.SetArrowLength(500, 500, 100, 0.45);
+            arrow.AddIntoInteractiveGraphics(cogDisplay1, "Arrow", false, cogDisplay1.InteractiveGraphics.Count);
+            arrowList.Add(arrow);
 
-            if (path != null)
-            {
-                e.Graphics.FillPath(new System.Drawing.Drawing2D.LinearGradientBrush(
-                    new PointF(300, 300), new PointF(350, 350), Color.Black, Color.Black), path);
-            }
-        }
-
-        protected override void OnPaint(PaintEventArgs e)
-        {
-            base.OnPaint(e);
-            
-            /*var myPen = new Pen(Color.Aqua);
-            var area = new Rectangle(new System.Drawing.Point(0, 0), 
-                new System.Drawing.Size(this.Size.Width - 1, this.Size.Height - 1));
-            e.Graphics.DrawRectangle(myPen, area);*/
+            //Populate defect table
+            string detail = string.Format("({0}, {1})",
+                arrow.GetStartX(),
+                arrow.GetStartY());
+            defectTable.Rows.Add(defectTable.Rows.Count, defectCategory, detail);
         }
 
         private void btnTest_Click(object sender, EventArgs e)
         {
-            /*CogCompositeShape compositeShape = new CogCompositeShape();
-            //Line1
-            CogLineSegment line1 = new CogLineSegment();
-            line1.SetStartLengthRotation(500, 500, 100, 0);
-            compositeShape.Shapes.Add(line1);
-            //Line2
-            CogLineSegment line2 = new CogLineSegment();
-            line2.SetStartLengthRotation(400, 400, 50, 0);
-            compositeShape.Shapes.Add(line2);
-            //Point1
-            CogPointMarker point1 = new CogPointMarker();
-            point1.SetCenterRotationSize(500, 500, 0, 5);
-            compositeShape.Shapes.Add(point1);
-            //Shape property
-            compositeShape.Interactive = true;
-            //cogDisplay1.InteractiveGraphics.Add(line1, "a", false);
+            /*Arrow myArrow = new Arrow();
+            myArrow.SetArrowLength(500, 500, 50, 0);
+            myArrow.GraphicDOFEnable = CogLineSegmentDOFConstants.BothPoints;
+            myArrow.Interactive = true;
+            myArrow.TipText = string.Format("Defect No: {0}", cogDisplay1.InteractiveGraphics.Count);
+            myArrow.LineWidthInScreenPixels = (int)UpDownLineWidth.Value;
+            cogDisplay1.InteractiveGraphics.Add(myArrow, "Arrow", false);*/
 
-            Color black = Color.FromArgb(255, 0, 0, 0);
-            Pen pen = new Pen(black);
-            pen.Width = 5;*/
+            //Populate defect table
+            /*string detail = string.Format("({0}, {1})",
+                cogDefectBoundingRect.CenterX,
+                cogDefectBoundingRect.CenterY);
+            defectTable.Rows.Add(defectTable.Rows.Count, defectCategory, detail);*/
+        }
+
+        private void btnTest2_Click(object sender, EventArgs e)
+        {
+            Shapes.Rectangle cogDefectBoundingRect = new Shapes.Rectangle();
+            cogDefectBoundingRect.SetCenterLengthsRotationSkew(800, 380, 600, 300, 0, 0);
+            cogDefectBoundingRect.Interactive = true;
+            cogDefectBoundingRect.GraphicDOFEnable = CogRectangleAffineDOFConstants.Position | CogRectangleAffineDOFConstants.Size;
+            cogDefectBoundingRect.TipText = string.Format("Defect No: {0}", cogDisplay1.InteractiveGraphics.Count);
+            cogDefectBoundingRect.LineWidthInScreenPixels = (int)UpDownLineWidth.Value;
+            cogDefectBoundingRect.Index = cogDisplay1.InteractiveGraphics.Count;
+            cogDisplay1.InteractiveGraphics.Add(cogDefectBoundingRect, "DefectRect", false);
+            //Populate defect table
+            string detail = string.Format("({0}, {1})",
+                cogDefectBoundingRect.CenterX,
+                cogDefectBoundingRect.CenterY);
+            defectTable.Rows.Add(defectTable.Rows.Count, defectCategory, detail);
+        }
+
+        private void btnTest3_Click(object sender, EventArgs e)
+        {
+            Console.WriteLine("BUTTO3");
+            CogCompositeShape arrow = new CogCompositeShape();
+
+            CogLineSegment cogLineSegment = new CogLineSegment();
+            cogLineSegment.SetStartLengthRotation(500, 500, 50, 0);
+            cogLineSegment.SelectedSpaceName = "$";
+
+            CogLineSegment cogLineSegment2 = new CogLineSegment();
+            cogLineSegment2.SetStartLengthRotation(400, 400, 100,100);
+            cogLineSegment2.SelectedSpaceName = "$";
+
+            CogRectangleAffine cogDefectBoundingRect = new CogRectangleAffine();
+            cogDefectBoundingRect.SetCenterLengthsRotationSkew(800, 380, 600, 300, 0, 0);
+            cogDefectBoundingRect.SelectedSpaceName = "$";
+
+            arrow.Shapes.Add(cogLineSegment);
+            arrow.Shapes.Add(cogLineSegment2);
+            arrow.Shapes.Add(cogDefectBoundingRect);
+            arrow.Interactive = true;
+            arrow.Color = CogColorConstants.Red;
+
+            arrow.SelectedSpaceName = "$";
+            cogDisplay1.InteractiveGraphics.Add(arrow, "arrow", false);
         }
 
         private void DrawToolFrm_Load(object sender, EventArgs e)
@@ -205,7 +243,6 @@ namespace CogDrawTool
             cogDefectBoundingRect.TipText = string.Format("Defect No: {0}", cogDisplay1.InteractiveGraphics.Count);
             cogDefectBoundingRect.LineWidthInScreenPixels = (int)UpDownLineWidth.Value;
             cogDisplay1.InteractiveGraphics.Add(cogDefectBoundingRect, "DefectRect", false);
-            
             //Populate defect table
             string detail = string.Format("({0}, {1})",
                 cogDefectBoundingRect.CenterX,
@@ -225,7 +262,6 @@ namespace CogDrawTool
             cogGraphicLabel.TipText = string.Format("Defect No: {0}", cogDisplay1.InteractiveGraphics.Count);
             cogGraphicLabel.LineWidthInScreenPixels = (int)UpDownLineWidth.Value;
             cogDisplay1.InteractiveGraphics.Add(cogGraphicLabel, "Annotation", false);
-
             //Populate defect table
             string detail = string.Format("({0}, {1})",
                 cogGraphicLabel.X, 
@@ -253,7 +289,7 @@ namespace CogDrawTool
         private void BtnLine_Click(object sender, EventArgs e)
         {
             CogLineSegment cogLineSegment = new CogLineSegment();
-            cogLineSegment.SetStartLengthRotation(500, 500, 50, 0);
+            cogLineSegment.SetStartLengthRotation(200, 200, 500, 0);
             cogLineSegment.GraphicDOFEnable = CogLineSegmentDOFConstants.BothPoints;
             cogLineSegment.Interactive = true;
             cogLineSegment.TipText = string.Format("Defect No: {0}", cogDisplay1.InteractiveGraphics.Count);
@@ -292,12 +328,11 @@ namespace CogDrawTool
         private void btnRefresh_Click(object sender, EventArgs e)
         {
             //TODO: Could use a dragging stopped method 
-
             string detail;
             String tipText;
             int index;
             CogInteractiveGraphicsContainer graphics = cogDisplay1.InteractiveGraphics;
-           
+            
             for (int i = 0; i < graphics.Count; i++)
             {
                 //Get the original index of cogDisplay1.InteractiveGraphics[i].
@@ -341,6 +376,27 @@ namespace CogDrawTool
                 }
                 else if (graphics[i].GetType() == typeof(CogLineSegment))
                 {
+                    /*//Since both line and arrow uses CogLineSegment, 
+                    //have to check whether it is line or arrow.
+                    //This is done by iterating through arrowList 
+                    //and compare the graphic number
+
+                    //Check if is component of arrow
+                    for (int j = 0; i < arrowList.Count; i++)
+                    {
+                        if (arrowList[j].GetIndex() == index)
+                        {
+                            detail = string.Format("({0}, {1})",
+                                ((CogLineSegment)graphics[i]).StartX,
+                                ((CogLineSegment)graphics[i]).StartX);
+                            //Update if detail does not match
+                            if (defectTable.Rows[index]["Detail"].ToString() != detail)
+                            {
+                                defectTable.Rows[index]["Detail"] = detail;
+                            }
+                        }
+                    }*/
+
                     detail = string.Format("({0}, {1})",
                         ((CogLineSegment)graphics[i]).StartX,
                         ((CogLineSegment)graphics[i]).StartX);
@@ -359,13 +415,13 @@ namespace CogDrawTool
             CogCompositeShape resultGraphic = new CogCompositeShape();
             //Allows each shape to store their properties (Like interactive, DOF...etc)
             resultGraphic.CompositionMode = CogCompositeShapeCompositionModeConstants.Freeform;
-
+            
             //Add each interactive graphics into CompositeShape
             for (int i = 0; i < cogDisplay1.InteractiveGraphics.Count; i++)
             {
                 resultGraphic.Shapes.Add((ICogGraphicParentChild)cogDisplay1.InteractiveGraphics[i]);
             }
-
+          
             if (resultGraphic.Shapes.Count > 0)
             {
                 //Export vpp
@@ -430,7 +486,7 @@ namespace CogDrawTool
             string path = Path.Combine(_path, "Serialize.vpp");
             CogCompositeShape container = (CogCompositeShape)CogSerializer.LoadObjectFromFile(path);
             CogGraphicChildren shapes = container.Shapes;
-
+            
             for (int i = 0; i < shapes.Count; i++)
             {
                 if (shapes[i].GetType() == typeof(CogRectangleAffine))
@@ -463,5 +519,47 @@ namespace CogDrawTool
                 defectTable.Load(dr);
             }
         }
+
+        //To update moving arrows
+        private void cogDisplay1_MouseDown(object sender, MouseEventArgs e)
+        {
+            for (int i = 0; i < cogDisplay1.InteractiveGraphics.Count; i++)
+            {
+                if (cogDisplay1.InteractiveGraphics[i].Selected)
+                {
+                    //Get the index. 
+                    string tipText = cogDisplay1.InteractiveGraphics[i].TipText.ToString();
+                    int selectedShapeIndex = int.Parse(tipText[tipText.Length - 1].ToString());
+
+                    //Check if arrow is selected
+                    for (int j = 0; j < arrowList.Count; j++)
+                    {
+                        if (arrowList[j].GetIndex() == selectedShapeIndex)
+                        {
+                            arrowSelected = true;
+                            graphicSelected = (CogLineSegment)cogDisplay1.InteractiveGraphics[i];
+                            selectedArrowIndex = j;
+                            break;
+                        }
+                    }
+                }
+            }
+        }
+
+        private void cogDisplay1_MouseMove(object sender, MouseEventArgs e)
+        {
+            if (arrowSelected)
+            {
+                double newStartX = graphicSelected.StartX;
+                double newStartY = graphicSelected.StartY;
+                double newLength = graphicSelected.Length;
+                double newRotation = graphicSelected.Length;
+                
+                //Get the line position (middle, left of right line)
+                int linePosition = arrowList[selectedArrowIndex].GetLinePosition(graphicSelected);
+                arrowList[selectedArrowIndex].UpdateLineSegments(newStartX, newStartY, newLength, newRotation, linePosition);
+            }
+            //((CogLineSegment)cogDisplay1.InteractiveGraphics[0]).StartX = 100;
+        }  
     }
 }
