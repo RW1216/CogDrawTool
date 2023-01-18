@@ -15,79 +15,45 @@ namespace CogDrawTool
 {
     internal class Arrow 
     {
-        //_lineSegments[0] = middle line
-        //_lineSegments[1] = left line
-        //_lineSegments[2] = right line
-        private CogLineSegment[] _lineSegments;
-        private int _index;
-
-        CogLineSegment cogLineSegment;
+        //ArrowComponent.Shape[0] = middle line
+        //ArrowComponent.Shape[1] = left line
+        //ArrowComponent.Shape[2] = right line
+        CogCompositeShape ArrowComponent;
 
         private const double ANGLE = 0.45;
 
-        //
-        // Summary:
-        //     Constructs a new instance of this class.
-        [CogDocSummary("Constructs a new instance of this class.")]
         public Arrow()
         {
-            _lineSegments = new CogLineSegment[3];
+            ArrowComponent = new CogCompositeShape();
         }
 
         public void SetArrowLength(double startX, double startY, double length, double rotation)
         {
             //Long line
-            cogLineSegment = new CogLineSegment();
+            CogLineSegment cogLineSegment = new CogLineSegment();
             cogLineSegment.SetStartLengthRotation(startX, startY, length, rotation);
-            cogLineSegment.GraphicDOFEnable = CogLineSegmentDOFConstants.BothPoints;
-            cogLineSegment.Interactive = true;
-            _lineSegments[0] = cogLineSegment;
+            cogLineSegment.SelectedSpaceName = "$";
+            ArrowComponent.Shapes.Add(cogLineSegment);
             //left line
             cogLineSegment = new CogLineSegment();
             cogLineSegment.SetStartLengthRotation(startX, startY, length / 5, rotation - ANGLE);
-            cogLineSegment.GraphicDOFEnable = CogLineSegmentDOFConstants.None;
-            cogLineSegment.Interactive = true;
-            _lineSegments[1] = cogLineSegment;
+            cogLineSegment.SelectedSpaceName = "$";
+            ArrowComponent.Shapes.Add(cogLineSegment);
             //right line
             cogLineSegment = new CogLineSegment();
             cogLineSegment.SetStartLengthRotation(startX, startY, length / 5, rotation + ANGLE);
-            cogLineSegment.GraphicDOFEnable = CogLineSegmentDOFConstants.None;
-            cogLineSegment.Interactive = true;
-            _lineSegments[2] = cogLineSegment;
-
-            //ArrowShape.Shapes.Add()
+            cogLineSegment.SelectedSpaceName = "$";
+            ArrowComponent.Shapes.Add(cogLineSegment);
         }
 
-        CogCompositeShape ArrowShape;
-
-        public new CogCompositeShape GetArrow()
+        public CogCompositeShape GetArrow()
         {
-            return ArrowShape;
-        }
-
-        //TODO: Is this the correct way of method hiding?
-        public new void SetStartLengthRotation(double startX, double startY, double length, double rotation)
-        { }
-
-        public void AddIntoInteractiveGraphics(CogDisplay display, string groupName, bool checkForDuplicates, int graphicIndex)
-        {
-            _index = graphicIndex;
-
-            foreach (CogLineSegment line in _lineSegments)
-            {
-                line.TipText = string.Format("Defect No: {0}", graphicIndex);
-                display.InteractiveGraphics.Add(line, groupName, checkForDuplicates);
-            }
-        }
-
-        private void UpdateDisplay(CogDisplay display)
-        {
-
+            return ArrowComponent;
         }
 
         public void UpdateLineSegments(double startX, double startY, double length, double rotation, int linePosition)
         {
-            //if middle line moved
+            /*//if middle line moved
             if (linePosition == 0)
             {
                 //Update left line
@@ -109,40 +75,17 @@ namespace CogDrawTool
                 _lineSegments[1].SetStartLengthRotation(startX, startY, length, rotation - ANGLE*2);
                 //Update middle line
                 _lineSegments[0].SetStartLengthRotation(startX, startY, length * 5, rotation - ANGLE);
-            }
-        }
-
-        public int GetLinePosition(CogLineSegment searchLine)
-        {
-            for (int i = 0; i < _lineSegments.Length; i++)
-            {
-                if (_lineSegments[i].Equals(searchLine))
-                {
-                    //Console.WriteLine("SAME");
-                    return i;
-                }
-                else
-                {
-                    //Console.WriteLine("DIFFERENT");
-                }
-            }
-            return -1;
+            }*/
         }
 
         public double GetStartX()
         {
-            return _lineSegments[0].StartX;
+            return ((CogLineSegment)ArrowComponent.Shapes[0]).StartX;
         }
 
         public double GetStartY()
         {
-            return _lineSegments[0].StartY;
+            return ((CogLineSegment)ArrowComponent.Shapes[0]).StartY;
         }
-
-        public int GetIndex()
-        {
-            return _index;
-        }
-
     }
 }
