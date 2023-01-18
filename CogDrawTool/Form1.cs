@@ -58,6 +58,7 @@ namespace CogDrawTool
             //Set the CogCompositeShape properties
             arrowComponents.Interactive = true;
             arrowComponents.GraphicDOFEnable = CogCompositeShapeDOFConstants.All;
+            arrowComponents.ID = 0;
             arrowComponents.ParentFromChildTransform = arrowComponents.GetParentFromChildTransform();
 
             shapeContainer.Add(arrowComponents);
@@ -78,7 +79,7 @@ namespace CogDrawTool
 
         private void btnTest2_Click(object sender, EventArgs e)
         {
-            Console.WriteLine("cogDisplay1.InteractiveGraphics Count: " + cogDisplay1.InteractiveGraphics.Count);
+            Console.WriteLine("cogDisplay1.InteractiveGraphics Count: " + shapeContainer.Count);
         }
 
         private void btnTest3_Click(object sender, EventArgs e)
@@ -218,10 +219,10 @@ namespace CogDrawTool
             cogDefectBoundingRect.SetCenterLengthsRotationSkew(800, 380, 600, 300, 0, 0);
             cogDefectBoundingRect.Interactive = true;
             cogDefectBoundingRect.GraphicDOFEnable = CogRectangleAffineDOFConstants.Position | CogRectangleAffineDOFConstants.Size;
-            cogDefectBoundingRect.TipText = string.Format("Defect No: {0}", cogDisplay1.InteractiveGraphics.Count);
+            cogDefectBoundingRect.TipText = string.Format("Defect No: {0}", shapeContainer.Count);
             cogDefectBoundingRect.LineWidthInScreenPixels = (int)UpDownLineWidth.Value;
             cogDisplay1.InteractiveGraphics.Add(cogDefectBoundingRect, "DefectRect", false);
-
+            shapeContainer.Add(cogDefectBoundingRect);
             //Populate defect table
             string detail = string.Format("({0}, {1})",
                 cogDefectBoundingRect.CenterX,
@@ -238,9 +239,10 @@ namespace CogDrawTool
             cogGraphicLabel.SetXYText(100, 100, text);
             cogGraphicLabel.Interactive = true;
             cogGraphicLabel.GraphicDOFEnable = CogGraphicLabelDOFConstants.Position;
-            cogGraphicLabel.TipText = string.Format("Defect No: {0}", cogDisplay1.InteractiveGraphics.Count);
+            cogGraphicLabel.TipText = string.Format("Defect No: {0}", shapeContainer.Count);
             cogGraphicLabel.LineWidthInScreenPixels = (int)UpDownLineWidth.Value;
             cogDisplay1.InteractiveGraphics.Add(cogGraphicLabel, "Annotation", false);
+            shapeContainer.Add(cogGraphicLabel);
             //Populate defect table
             string detail = string.Format("({0}, {1})",
                 cogGraphicLabel.X, 
@@ -254,10 +256,10 @@ namespace CogDrawTool
             cogPointMarker.SetCenterRotationSize(500, 500, 0, 5);
             cogPointMarker.GraphicDOFEnable = CogPointMarkerDOFConstants.Position;
             cogPointMarker.Interactive = true;
-            cogPointMarker.TipText = string.Format("Defect No: {0}", cogDisplay1.InteractiveGraphics.Count);
+            cogPointMarker.TipText = string.Format("Defect No: {0}", shapeContainer.Count);
             cogPointMarker.LineWidthInScreenPixels = (int)UpDownLineWidth.Value;
             cogDisplay1.InteractiveGraphics.Add(cogPointMarker, "Point", false);
-            
+            shapeContainer.Add(cogPointMarker);
             //Populate defect table
             string detail = string.Format("({0}, {1})",
                 cogPointMarker.X,
@@ -271,9 +273,10 @@ namespace CogDrawTool
             cogLineSegment.SetStartLengthRotation(200, 200, 500, 0);
             cogLineSegment.GraphicDOFEnable = CogLineSegmentDOFConstants.BothPoints;
             cogLineSegment.Interactive = true;
-            cogLineSegment.TipText = string.Format("Defect No: {0}", cogDisplay1.InteractiveGraphics.Count);
+            cogLineSegment.TipText = string.Format("Defect No: {0}", shapeContainer.Count);
             cogLineSegment.LineWidthInScreenPixels = (int)UpDownLineWidth.Value;
             cogDisplay1.InteractiveGraphics.Add(cogLineSegment, "Line", false);
+            shapeContainer.Add(cogLineSegment);
             //Populate defect table
             string detail = string.Format("({0}, {1})",
                 cogLineSegment.StartX,
@@ -308,18 +311,21 @@ namespace CogDrawTool
         {
             //TODO: Could use a dragging stopped method 
             string detail;
-            String tipText;
-            int index;
+            int index = 0;
             CogInteractiveGraphicsContainer graphics = cogDisplay1.InteractiveGraphics;
             
-            for (int i = 0; i < graphics.Count; i++)
+            for (int i = 0; i < cogDisplay1.InteractiveGraphics.Count; i++)
             {
-                //Get the original index of cogDisplay1.InteractiveGraphics[i].
-                // cogDisplay1 item position is dynamic, the original index
-                //must be conserved so datatable can be updated. 
-                tipText = graphics[i].TipText.ToString();
-                index = int.Parse(tipText[tipText.Length - 1].ToString());
-                
+                for (int j = 0; j < shapeContainer.Count; j++)
+                {
+                    //Check if it's the same object
+                    if (graphics[i].Equals(shapeContainer[j]))
+                    {
+                        index = j;
+                        break;
+                    }
+                }
+                                
                 if (graphics[i].GetType() == typeof(CogRectangleAffine))
                 {
                     detail = string.Format("({0}, {1})", 
@@ -364,7 +370,22 @@ namespace CogDrawTool
                         defectTable.Rows[index]["Detail"] = detail;
                     }
                 }
-            }
+                else if (graphics[i].GetType() == typeof(CogCompositeShape))
+                {
+                    //ID 0 = arrow
+                    if (((CogCompositeShape)graphics[i]).ID == 0)
+                    {
+                        detail = string.Format("({0}, {1})",
+                            ((CogLineSegment)((CogCompositeShape)graphics[i]).Shapes[0]).StartX,
+                            ((CogLineSegment)((CogCompositeShape)graphics[i]).Shapes[0]).StartY);
+                        //Update if detail does not match
+                        if (defectTable.Rows[index]["Detail"].ToString() != detail)
+                        {
+                            defectTable.Rows[index]["Detail"] = detail;
+                        }
+                    }
+                }
+            } 
         }
 
         private void btnExport_Click(object sender, EventArgs e)
@@ -375,7 +396,7 @@ namespace CogDrawTool
             resultGraphic.CompositionMode = CogCompositeShapeCompositionModeConstants.Freeform;
             
             //Add each interactive graphics into CompositeShape
-            for (int i = 0; i < cogDisplay1.InteractiveGraphics.Count; i++)
+            for (int i = 0; i < shapeContainer.Count; i++)
             {
                 resultGraphic.Shapes.Add((ICogGraphicParentChild)cogDisplay1.InteractiveGraphics[i]);
             }
