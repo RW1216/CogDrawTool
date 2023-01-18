@@ -375,6 +375,7 @@ namespace CogDrawTool
                     //ID 0 = arrow
                     if (((CogCompositeShape)graphics[i]).ID == 0)
                     {
+                        //TODO: Cant get the new position of arrow
                         detail = string.Format("({0}, {1})",
                             ((CogLineSegment)((CogCompositeShape)graphics[i]).Shapes[0]).StartX,
                             ((CogLineSegment)((CogCompositeShape)graphics[i]).Shapes[0]).StartY);
@@ -390,21 +391,21 @@ namespace CogDrawTool
 
         private void btnExport_Click(object sender, EventArgs e)
         {
-            //Convert InteractiveGraphics into CogCompositeShape
-            CogCompositeShape resultGraphic = new CogCompositeShape();
+            //Convert InteractiveGraphics to CogCompositeShape
+            CogCompositeShape container = new CogCompositeShape();
             //Allows each shape to store their properties (Like interactive, DOF...etc)
-            resultGraphic.CompositionMode = CogCompositeShapeCompositionModeConstants.Freeform;
+            container.CompositionMode = CogCompositeShapeCompositionModeConstants.Freeform;
             
-            //Add each interactive graphics into CompositeShape
+            //Add each shape into CompositeShape
             for (int i = 0; i < shapeContainer.Count; i++)
             {
-                resultGraphic.Shapes.Add((ICogGraphicParentChild)cogDisplay1.InteractiveGraphics[i]);
+                container.Shapes.Add(shapeContainer[i]);
             }
           
-            if (resultGraphic.Shapes.Count > 0)
+            if (container.Shapes.Count > 0)
             {
                 //Export vpp
-                CogSerializer.SaveObjectToFile(resultGraphic,
+                CogSerializer.SaveObjectToFile(container,
                     Path.Combine(_path, "Serialize.vpp"));
 
                 //Export CSV
@@ -457,9 +458,10 @@ namespace CogDrawTool
             Bitmap bmp = new Bitmap(Path.Combine(_path, "Screenshot_20230103_020226.png"));
             DisplayImage(bmp);
            
-            //Clear display and datatable
+            //Clear the display, shapeContainer and datatable.
             cogDisplay1.InteractiveGraphics.Clear();
-            CreateDefectListTable(); 
+            CreateDefectListTable();
+            shapeContainer.Clear();
 
             //Load vpp file
             string path = Path.Combine(_path, "Serialize.vpp");
@@ -472,21 +474,31 @@ namespace CogDrawTool
                 {
                     CogRectangleAffine graphic = (CogRectangleAffine)shapes[i];
                     cogDisplay1.InteractiveGraphics.Add(graphic, "DefectRect", false);
+                    shapeContainer.Add(graphic);
                 }
                 else if (shapes[i].GetType() == typeof(CogGraphicLabel))
                 {
                     CogGraphicLabel graphic = (CogGraphicLabel)shapes[i];
                     cogDisplay1.InteractiveGraphics.Add(graphic, "Annotation", false);
+                    shapeContainer.Add(graphic);
                 }
                 else if (shapes[i].GetType() == typeof(CogPointMarker))
                 {
                     CogPointMarker graphic = (CogPointMarker)shapes[i];
                     cogDisplay1.InteractiveGraphics.Add(graphic, "Point", false);
+                    shapeContainer.Add(graphic);
                 }
                 else if (shapes[i].GetType() == typeof(CogLineSegment))
                 {
                     CogLineSegment graphic = (CogLineSegment)shapes[i];
                     cogDisplay1.InteractiveGraphics.Add(graphic, "Line", false);
+                    shapeContainer.Add(graphic);
+                }
+                else if (shapes[i].GetType() == typeof(CogCompositeShape))
+                {
+                    CogCompositeShape graphic = (CogCompositeShape)shapes[i];
+                    cogDisplay1.InteractiveGraphics.Add(graphic, "Arrow", false);
+                    shapeContainer.Add(graphic);
                 }
             }
 
