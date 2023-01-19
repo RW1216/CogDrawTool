@@ -49,26 +49,7 @@ namespace CogDrawTool
             InitializeComponent();
         }
 
-        private void btnArrow_Click(object sender, EventArgs e)
-        {
-            Arrow arrow = new Arrow();
-            arrow.SetArrowLength(500, 500, 100, 0.45);
-            CogCompositeShape arrowComponents = arrow.GetArrow();
-
-            //Set the CogCompositeShape properties
-            arrowComponents.Interactive = true;
-            arrowComponents.GraphicDOFEnable = CogCompositeShapeDOFConstants.All;
-            arrowComponents.ID = 0;
-            arrowComponents.ParentFromChildTransform = arrowComponents.GetParentFromChildTransform();
-
-            shapeContainer.Add(arrowComponents);
-            cogDisplay1.InteractiveGraphics.Add(arrowComponents, "Arrow", false);
-            //Populate defect table
-            string detail = string.Format("({0}, {1})",
-                500,
-                500);
-            defectTable.Rows.Add(defectTable.Rows.Count, defectCategory, detail);
-        }
+        
 
         private void btnTest_Click(object sender, EventArgs e)
         {
@@ -281,6 +262,31 @@ namespace CogDrawTool
             string detail = string.Format("({0}, {1})",
                 cogLineSegment.StartX,
                 cogLineSegment.StartY);
+            defectTable.Rows.Add(defectTable.Rows.Count, defectCategory, detail);
+        }
+
+        private void btnArrow_Click(object sender, EventArgs e)
+        {
+            Arrow arrow = new Arrow();
+            arrow.SetArrowLength(500, 500, 100, 0.45);
+            CogCompositeShape arrowComponents = arrow.GetArrow();
+
+            //Set the CogCompositeShape properties
+            arrowComponents.Interactive = true;
+            arrowComponents.GraphicDOFEnable = CogCompositeShapeDOFConstants.All;
+            arrowComponents.TipText = string.Format("Defect No: {0}", shapeContainer.Count);
+            arrowComponents.ID = 0;
+            arrowComponents.ParentFromChildTransform = arrowComponents.GetParentFromChildTransform();
+
+            shapeContainer.Add(arrowComponents);
+            cogDisplay1.InteractiveGraphics.Add(arrowComponents, "Arrow", false);
+            //Populate defect table
+            //NOTICE: CogCompositeShape do not have x and y variable.
+            //   The shapes x and y value does not update
+            //   even after the CogCompositeShape position change. 
+            //   Perhaps could ask the user for details, or use other way
+            //   that can get the x and y position.
+            string detail = string.Format("{0}", "Type in your detail");
             defectTable.Rows.Add(defectTable.Rows.Count, defectCategory, detail);
         }
 
