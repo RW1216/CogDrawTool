@@ -41,6 +41,7 @@ namespace CogDrawTool
             this.BtnPoint = new System.Windows.Forms.ToolStripButton();
             this.BtnLine = new System.Windows.Forms.ToolStripButton();
             this.btnArrow = new System.Windows.Forms.ToolStripButton();
+            this.btnDraw = new System.Windows.Forms.ToolStripButton();
             this.OpenImgDialog = new System.Windows.Forms.OpenFileDialog();
             this.SaveImageDialog = new System.Windows.Forms.SaveFileDialog();
             this.panel1 = new System.Windows.Forms.Panel();
@@ -61,6 +62,8 @@ namespace CogDrawTool
             this.btnTest2 = new System.Windows.Forms.Button();
             this.btnTest3 = new System.Windows.Forms.Button();
             this.numericUpDownTest = new System.Windows.Forms.NumericUpDown();
+            this.label1 = new System.Windows.Forms.Label();
+            this.btnClear = new System.Windows.Forms.Button();
             ((System.ComponentModel.ISupportInitialize)(this.cogDisplay1)).BeginInit();
             this.toolStrip1.SuspendLayout();
             this.panel1.SuspendLayout();
@@ -87,9 +90,10 @@ namespace CogDrawTool
             this.cogDisplay1.MouseWheelSensitivity = 1D;
             this.cogDisplay1.Name = "cogDisplay1";
             this.cogDisplay1.OcxState = ((System.Windows.Forms.AxHost.State)(resources.GetObject("cogDisplay1.OcxState")));
-            this.cogDisplay1.Size = new System.Drawing.Size(746, 626);
+            this.cogDisplay1.Size = new System.Drawing.Size(761, 626);
             this.cogDisplay1.TabIndex = 1;
             this.cogDisplay1.MouseDown += new System.Windows.Forms.MouseEventHandler(this.cogDisplay1_MouseDown);
+            this.cogDisplay1.MouseUp += new System.Windows.Forms.MouseEventHandler(this.cogDisplay1_MouseUp);
             this.cogDisplay1.MouseMove += new System.Windows.Forms.MouseEventHandler(this.cogDisplay1_MouseMove);
             // 
             // cogDisplayStatusBarV21
@@ -122,7 +126,8 @@ namespace CogDrawTool
             this.BtnAnnotation,
             this.BtnPoint,
             this.BtnLine,
-            this.btnArrow});
+            this.btnArrow,
+            this.btnDraw});
             this.toolStrip1.Location = new System.Drawing.Point(0, 0);
             this.toolStrip1.Name = "toolStrip1";
             this.toolStrip1.Size = new System.Drawing.Size(87, 736);
@@ -183,6 +188,15 @@ namespace CogDrawTool
             this.btnArrow.Size = new System.Drawing.Size(84, 24);
             this.btnArrow.Text = "ARROW";
             this.btnArrow.Click += new System.EventHandler(this.btnArrow_Click);
+            // 
+            // btnDraw
+            // 
+            this.btnDraw.Image = ((System.Drawing.Image)(resources.GetObject("btnDraw.Image")));
+            this.btnDraw.ImageTransparentColor = System.Drawing.Color.Magenta;
+            this.btnDraw.Name = "btnDraw";
+            this.btnDraw.Size = new System.Drawing.Size(84, 24);
+            this.btnDraw.Text = "Draw";
+            this.btnDraw.Click += new System.EventHandler(this.btnDraw_Click);
             // 
             // OpenImgDialog
             // 
@@ -298,7 +312,7 @@ namespace CogDrawTool
             // 
             // btnRefresh
             // 
-            this.btnRefresh.Location = new System.Drawing.Point(946, 400);
+            this.btnRefresh.Location = new System.Drawing.Point(950, 250);
             this.btnRefresh.Name = "btnRefresh";
             this.btnRefresh.Size = new System.Drawing.Size(75, 23);
             this.btnRefresh.TabIndex = 12;
@@ -308,7 +322,7 @@ namespace CogDrawTool
             // 
             // btnExport
             // 
-            this.btnExport.Location = new System.Drawing.Point(946, 429);
+            this.btnExport.Location = new System.Drawing.Point(950, 299);
             this.btnExport.Name = "btnExport";
             this.btnExport.Size = new System.Drawing.Size(75, 23);
             this.btnExport.TabIndex = 13;
@@ -318,7 +332,7 @@ namespace CogDrawTool
             // 
             // btnImport
             // 
-            this.btnImport.Location = new System.Drawing.Point(946, 458);
+            this.btnImport.Location = new System.Drawing.Point(950, 328);
             this.btnImport.Name = "btnImport";
             this.btnImport.Size = new System.Drawing.Size(75, 23);
             this.btnImport.TabIndex = 14;
@@ -328,7 +342,7 @@ namespace CogDrawTool
             // 
             // btnTest
             // 
-            this.btnTest.Location = new System.Drawing.Point(899, 317);
+            this.btnTest.Location = new System.Drawing.Point(903, 557);
             this.btnTest.Name = "btnTest";
             this.btnTest.Size = new System.Drawing.Size(75, 23);
             this.btnTest.TabIndex = 15;
@@ -338,10 +352,20 @@ namespace CogDrawTool
             // 
             // UpDownLineWidth
             // 
-            this.UpDownLineWidth.Location = new System.Drawing.Point(957, 234);
+            this.UpDownLineWidth.Location = new System.Drawing.Point(1009, 213);
+            this.UpDownLineWidth.Minimum = new decimal(new int[] {
+            1,
+            0,
+            0,
+            0});
             this.UpDownLineWidth.Name = "UpDownLineWidth";
             this.UpDownLineWidth.Size = new System.Drawing.Size(51, 22);
             this.UpDownLineWidth.TabIndex = 16;
+            this.UpDownLineWidth.Value = new decimal(new int[] {
+            1,
+            0,
+            0,
+            0});
             // 
             // imageList1
             // 
@@ -351,7 +375,7 @@ namespace CogDrawTool
             // 
             // btnTest2
             // 
-            this.btnTest2.Location = new System.Drawing.Point(985, 317);
+            this.btnTest2.Location = new System.Drawing.Point(989, 557);
             this.btnTest2.Name = "btnTest2";
             this.btnTest2.Size = new System.Drawing.Size(75, 23);
             this.btnTest2.TabIndex = 17;
@@ -361,7 +385,7 @@ namespace CogDrawTool
             // 
             // btnTest3
             // 
-            this.btnTest3.Location = new System.Drawing.Point(946, 346);
+            this.btnTest3.Location = new System.Drawing.Point(950, 586);
             this.btnTest3.Name = "btnTest3";
             this.btnTest3.Size = new System.Drawing.Size(75, 23);
             this.btnTest3.TabIndex = 18;
@@ -371,31 +395,48 @@ namespace CogDrawTool
             // 
             // numericUpDownTest
             // 
-            this.numericUpDownTest.Increment = new decimal(new int[] {
-            10,
-            0,
-            0,
-            0});
-            this.numericUpDownTest.Location = new System.Drawing.Point(919, 289);
-            this.numericUpDownTest.Maximum = new decimal(new int[] {
-            1000,
-            0,
-            0,
-            0});
+            this.numericUpDownTest.DecimalPlaces = 2;
+            this.numericUpDownTest.Location = new System.Drawing.Point(923, 529);
             this.numericUpDownTest.Minimum = new decimal(new int[] {
-            1000,
+            1,
             0,
             0,
-            -2147483648});
+            0});
             this.numericUpDownTest.Name = "numericUpDownTest";
             this.numericUpDownTest.Size = new System.Drawing.Size(120, 22);
             this.numericUpDownTest.TabIndex = 19;
+            this.numericUpDownTest.Value = new decimal(new int[] {
+            1,
+            0,
+            0,
+            0});
+            // 
+            // label1
+            // 
+            this.label1.AutoSize = true;
+            this.label1.Location = new System.Drawing.Point(916, 215);
+            this.label1.Name = "label1";
+            this.label1.Size = new System.Drawing.Size(87, 16);
+            this.label1.TabIndex = 20;
+            this.label1.Text = "Shape Width:";
+            // 
+            // btnClear
+            // 
+            this.btnClear.Location = new System.Drawing.Point(950, 430);
+            this.btnClear.Name = "btnClear";
+            this.btnClear.Size = new System.Drawing.Size(75, 23);
+            this.btnClear.TabIndex = 21;
+            this.btnClear.Text = "Clear";
+            this.btnClear.UseVisualStyleBackColor = true;
+            this.btnClear.Click += new System.EventHandler(this.btnClear_Click);
             // 
             // DrawToolFrm
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(8F, 16F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.ClientSize = new System.Drawing.Size(1779, 736);
+            this.Controls.Add(this.btnClear);
+            this.Controls.Add(this.label1);
             this.Controls.Add(this.numericUpDownTest);
             this.Controls.Add(this.btnTest3);
             this.Controls.Add(this.btnTest2);
@@ -458,6 +499,9 @@ namespace CogDrawTool
         private System.Windows.Forms.Button btnTest3;
         private System.Windows.Forms.ToolStripButton btnArrow;
         private System.Windows.Forms.NumericUpDown numericUpDownTest;
+        private System.Windows.Forms.Label label1;
+        private System.Windows.Forms.ToolStripButton btnDraw;
+        private System.Windows.Forms.Button btnClear;
     }
 }
 
