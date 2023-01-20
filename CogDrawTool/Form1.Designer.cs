@@ -64,6 +64,7 @@ namespace CogDrawTool
             this.numericUpDownTest = new System.Windows.Forms.NumericUpDown();
             this.label1 = new System.Windows.Forms.Label();
             this.btnClear = new System.Windows.Forms.Button();
+            this.btnDistance = new System.Windows.Forms.ToolStripButton();
             ((System.ComponentModel.ISupportInitialize)(this.cogDisplay1)).BeginInit();
             this.toolStrip1.SuspendLayout();
             this.panel1.SuspendLayout();
@@ -100,7 +101,7 @@ namespace CogDrawTool
             // 
             this.cogDisplayStatusBarV21.CoordinateSpaceName = "*\\#";
             this.cogDisplayStatusBarV21.CoordinateSpaceName3D = "*\\#";
-            this.cogDisplayStatusBarV21.Location = new System.Drawing.Point(0, 667);
+            this.cogDisplayStatusBarV21.Location = new System.Drawing.Point(83, 689);
             this.cogDisplayStatusBarV21.Margin = new System.Windows.Forms.Padding(4);
             this.cogDisplayStatusBarV21.Name = "cogDisplayStatusBarV21";
             this.cogDisplayStatusBarV21.RightToLeft = System.Windows.Forms.RightToLeft.No;
@@ -127,10 +128,11 @@ namespace CogDrawTool
             this.BtnPoint,
             this.BtnLine,
             this.btnArrow,
-            this.btnDraw});
+            this.btnDraw,
+            this.btnDistance});
             this.toolStrip1.Location = new System.Drawing.Point(0, 0);
             this.toolStrip1.Name = "toolStrip1";
-            this.toolStrip1.Size = new System.Drawing.Size(87, 736);
+            this.toolStrip1.Size = new System.Drawing.Size(91, 736);
             this.toolStrip1.TabIndex = 4;
             this.toolStrip1.Text = "toolStrip1";
             // 
@@ -139,7 +141,7 @@ namespace CogDrawTool
             this.BtnLoad.Image = ((System.Drawing.Image)(resources.GetObject("BtnLoad.Image")));
             this.BtnLoad.ImageTransparentColor = System.Drawing.Color.Magenta;
             this.BtnLoad.Name = "BtnLoad";
-            this.BtnLoad.Size = new System.Drawing.Size(84, 24);
+            this.BtnLoad.Size = new System.Drawing.Size(88, 24);
             this.BtnLoad.Text = "LOAD";
             this.BtnLoad.Click += new System.EventHandler(this.BtnLoad_Click);
             // 
@@ -148,7 +150,7 @@ namespace CogDrawTool
             this.BtnRect.Image = ((System.Drawing.Image)(resources.GetObject("BtnRect.Image")));
             this.BtnRect.ImageTransparentColor = System.Drawing.Color.Magenta;
             this.BtnRect.Name = "BtnRect";
-            this.BtnRect.Size = new System.Drawing.Size(84, 24);
+            this.BtnRect.Size = new System.Drawing.Size(88, 24);
             this.BtnRect.Text = "RECT";
             this.BtnRect.Click += new System.EventHandler(this.BtnRect_Click);
             // 
@@ -157,7 +159,7 @@ namespace CogDrawTool
             this.BtnAnnotation.Image = ((System.Drawing.Image)(resources.GetObject("BtnAnnotation.Image")));
             this.BtnAnnotation.ImageTransparentColor = System.Drawing.Color.Magenta;
             this.BtnAnnotation.Name = "BtnAnnotation";
-            this.BtnAnnotation.Size = new System.Drawing.Size(84, 24);
+            this.BtnAnnotation.Size = new System.Drawing.Size(88, 24);
             this.BtnAnnotation.Text = "TEXT";
             this.BtnAnnotation.ToolTipText = "TEXT";
             this.BtnAnnotation.Click += new System.EventHandler(this.BtnAnnotation_Click);
@@ -167,7 +169,7 @@ namespace CogDrawTool
             this.BtnPoint.Image = ((System.Drawing.Image)(resources.GetObject("BtnPoint.Image")));
             this.BtnPoint.ImageTransparentColor = System.Drawing.Color.Magenta;
             this.BtnPoint.Name = "BtnPoint";
-            this.BtnPoint.Size = new System.Drawing.Size(84, 24);
+            this.BtnPoint.Size = new System.Drawing.Size(88, 24);
             this.BtnPoint.Text = "POINT";
             this.BtnPoint.Click += new System.EventHandler(this.BtnPoint_Click);
             // 
@@ -176,7 +178,7 @@ namespace CogDrawTool
             this.BtnLine.Image = ((System.Drawing.Image)(resources.GetObject("BtnLine.Image")));
             this.BtnLine.ImageTransparentColor = System.Drawing.Color.Magenta;
             this.BtnLine.Name = "BtnLine";
-            this.BtnLine.Size = new System.Drawing.Size(84, 24);
+            this.BtnLine.Size = new System.Drawing.Size(88, 24);
             this.BtnLine.Text = "LINE";
             this.BtnLine.Click += new System.EventHandler(this.BtnLine_Click);
             // 
@@ -185,7 +187,7 @@ namespace CogDrawTool
             this.btnArrow.Image = ((System.Drawing.Image)(resources.GetObject("btnArrow.Image")));
             this.btnArrow.ImageTransparentColor = System.Drawing.Color.Magenta;
             this.btnArrow.Name = "btnArrow";
-            this.btnArrow.Size = new System.Drawing.Size(84, 24);
+            this.btnArrow.Size = new System.Drawing.Size(88, 24);
             this.btnArrow.Text = "ARROW";
             this.btnArrow.Click += new System.EventHandler(this.btnArrow_Click);
             // 
@@ -194,7 +196,7 @@ namespace CogDrawTool
             this.btnDraw.Image = ((System.Drawing.Image)(resources.GetObject("btnDraw.Image")));
             this.btnDraw.ImageTransparentColor = System.Drawing.Color.Magenta;
             this.btnDraw.Name = "btnDraw";
-            this.btnDraw.Size = new System.Drawing.Size(84, 24);
+            this.btnDraw.Size = new System.Drawing.Size(88, 24);
             this.btnDraw.Text = "Draw";
             this.btnDraw.Click += new System.EventHandler(this.btnDraw_Click);
             // 
@@ -210,11 +212,10 @@ namespace CogDrawTool
             // 
             this.panel1.Controls.Add(this.cogDisplay1);
             this.panel1.Controls.Add(this.cogDisplayToolbarV21);
-            this.panel1.Controls.Add(this.cogDisplayStatusBarV21);
             this.panel1.Location = new System.Drawing.Point(83, 15);
             this.panel1.Margin = new System.Windows.Forms.Padding(4);
             this.panel1.Name = "panel1";
-            this.panel1.Size = new System.Drawing.Size(809, 704);
+            this.panel1.Size = new System.Drawing.Size(809, 666);
             this.panel1.TabIndex = 5;
             // 
             // tabControl1
@@ -430,6 +431,15 @@ namespace CogDrawTool
             this.btnClear.UseVisualStyleBackColor = true;
             this.btnClear.Click += new System.EventHandler(this.btnClear_Click);
             // 
+            // btnDistance
+            // 
+            this.btnDistance.Image = ((System.Drawing.Image)(resources.GetObject("btnDistance.Image")));
+            this.btnDistance.ImageTransparentColor = System.Drawing.Color.Magenta;
+            this.btnDistance.Name = "btnDistance";
+            this.btnDistance.Size = new System.Drawing.Size(88, 24);
+            this.btnDistance.Text = "Distance";
+            this.btnDistance.Click += new System.EventHandler(this.btnDistance_Click);
+            // 
             // DrawToolFrm
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(8F, 16F);
@@ -437,6 +447,7 @@ namespace CogDrawTool
             this.ClientSize = new System.Drawing.Size(1779, 736);
             this.Controls.Add(this.btnClear);
             this.Controls.Add(this.label1);
+            this.Controls.Add(this.cogDisplayStatusBarV21);
             this.Controls.Add(this.numericUpDownTest);
             this.Controls.Add(this.btnTest3);
             this.Controls.Add(this.btnTest2);
@@ -502,6 +513,7 @@ namespace CogDrawTool
         private System.Windows.Forms.Label label1;
         private System.Windows.Forms.ToolStripButton btnDraw;
         private System.Windows.Forms.Button btnClear;
+        private System.Windows.Forms.ToolStripButton btnDistance;
     }
 }
 

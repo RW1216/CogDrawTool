@@ -35,8 +35,8 @@ namespace CogDrawTool
         //Drawing
         private bool drawingMode;
         private bool mouseDown;
-        private int previousX = -1;
-        private int previousY = -1;
+        private double previousX = -1;
+        private double previousY = -1;
         private CogCompositeShape drawing;
 
         public delegate void DisplayImageDelegate(Bitmap frameBuffer);
@@ -309,9 +309,9 @@ namespace CogDrawTool
 
         private void btnArrow_Click(object sender, EventArgs e)
         {
-            Arrow arrow = new Arrow();
+            ShapeDesigner arrow = new ShapeDesigner();
             arrow.SetArrowLength(500, 500, 100, 0.45);
-            CogCompositeShape arrowComponents = arrow.GetArrow();
+            CogCompositeShape arrowComponents = arrow.GetShape();
 
             //Set the CogCompositeShape properties
             arrowComponents.Interactive = true;
@@ -322,6 +322,31 @@ namespace CogDrawTool
 
             shapeContainer.Add(arrowComponents);
             cogDisplay1.InteractiveGraphics.Add(arrowComponents, "Arrow", false);
+            //Populate defect table
+            //NOTICE: CogCompositeShape do not have x and y variable.
+            //   The shapes x and y value does not update
+            //   even after the CogCompositeShape position change. 
+            //   Perhaps could ask the user for details, or use other way
+            //   that can get the x and y position.
+            string detail = string.Format("{0}", "Type in your details");
+            defectTable.Rows.Add(defectTable.Rows.Count, defectCategory, detail);
+        }
+
+        private void btnDistance_Click(object sender, EventArgs e)
+        {
+            ShapeDesigner distance = new ShapeDesigner();
+            distance.SetDistanceLength(300, 300, 500, 300);
+            CogCompositeShape distanceComponents = distance.GetShape();
+
+            //Set the CogCompositeShape properties
+            distanceComponents.Interactive = true;
+            distanceComponents.GraphicDOFEnable = CogCompositeShapeDOFConstants.All;
+            distanceComponents.TipText = string.Format("Defect No: {0}", shapeContainer.Count);
+            distanceComponents.ID = 2;
+            distanceComponents.ParentFromChildTransform = distanceComponents.GetParentFromChildTransform();
+
+            shapeContainer.Add(distanceComponents);
+            cogDisplay1.InteractiveGraphics.Add(distanceComponents, "Distance", false);
             //Populate defect table
             //NOTICE: CogCompositeShape do not have x and y variable.
             //   The shapes x and y value does not update
@@ -435,6 +460,16 @@ namespace CogDrawTool
                     }
                     //ID 1 = drawings
                     else if (((CogCompositeShape)graphics[i]).ID == 1)
+                    {
+                        detail = string.Format("{0}", "Enter your details");
+                        //Update if detail does not match
+                        if (defectTable.Rows[index]["Detail"].ToString() != detail)
+                        {
+                            defectTable.Rows[index]["Detail"] = detail;
+                        }
+                    }
+                    //ID 2 = distance
+                    else if (((CogCompositeShape)graphics[i]).ID == 2)
                     {
                         detail = string.Format("{0}", "Enter your details");
                         //Update if detail does not match
@@ -567,6 +602,12 @@ namespace CogDrawTool
                         cogDisplay1.InteractiveGraphics.Add(graphic, "Drawing", false);
                         shapeContainer.Add(graphic);
                     }
+                    else if (((CogCompositeShape)shapes[i]).ID == 2)
+                    {
+                        CogCompositeShape graphic = (CogCompositeShape)shapes[i];
+                        cogDisplay1.InteractiveGraphics.Add(graphic, "Distance", false);
+                        shapeContainer.Add(graphic);
+                    }
                 }
             }
 
@@ -581,9 +622,28 @@ namespace CogDrawTool
 
         private void cogDisplay1_MouseDown(object sender, MouseEventArgs e)
         {
-            mouseDown = true;
-            previousX = e.X;
-            previousY = e.Y;
+            if (e.Button == MouseButtons.Left)
+            {
+                mouseDown = true;
+                CogDisplayStatusBarV2 a = cogDisplayStatusBarV21;
+                Console.WriteLine(a.Location.X);
+                Console.WriteLine(a.Location.Y);
+                Console.WriteLine();
+
+                Console.WriteLine(Cursor.Position.X);
+                Console.WriteLine(Cursor.Position.Y);
+                
+                //a.mouse
+                
+                previousX = e.X;
+                previousY = e.Y;
+            }
+            
+
+
+            /*CogPointMarker point = new CogPointMarker();
+            point.SetCenterRotationSize(previousX, previousY, 0, 3);
+            cogDisplay1.InteractiveGraphics.Add(point, "a", false);*/
         }   
 
         private void cogDisplay1_MouseMove(object sender, MouseEventArgs e)
@@ -668,5 +728,7 @@ namespace CogDrawTool
             CreateDefectListTable();
             shapeContainer.Clear();
         }
+
+        
     }
 }
