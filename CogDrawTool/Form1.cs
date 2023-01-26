@@ -23,6 +23,7 @@ using QWhale.Editor.TextSource;
 using static System.Windows.Forms.AxHost;
 using System.Drawing.Printing;
 using System.Windows.Media.Effects;
+//using Accord.Math.Geometry;
 
 namespace CogDrawTool
 {
@@ -97,13 +98,24 @@ namespace CogDrawTool
 
         private void btnTest2_Click(object sender, EventArgs e)
         {
-            Console.WriteLine("cogDisplay1.InteractiveGraphics Count: " + shapeContainer.Count);
+            if (shapeContainer[0].GetType() == typeof(CogCompositeShape))
+            {
+                CogCompositeShape shape = (CogCompositeShape)shapeContainer[0];
+
+                //((CogLineSegment)shape.Shapes[0]).StartX = 10;
+                //((CogLineSegment)shape.Shapes[0]).StartY = 10;
+                Console.WriteLine(((CogLineSegment)shape.Shapes[0]).StartX);
+            }
         }
 
         private void btnTest3_Click(object sender, EventArgs e)
         {
             Console.WriteLine("BUTTOM 3");
-            CogCompositeShape arrow = new CogCompositeShape();
+
+                        
+
+
+            /*CogCompositeShape arrow = new CogCompositeShape();
             arrow.GraphicDOFEnable = CogCompositeShapeDOFConstants.All;
             arrow.CompositionMode = CogCompositeShapeCompositionModeConstants.Uniform;
             arrow.Interactive = true;
@@ -123,7 +135,7 @@ namespace CogDrawTool
             //Must call this
             arrow.ParentFromChildTransform = arrow.GetParentFromChildTransform();
 
-            cogDisplay1.InteractiveGraphics.Add(arrow, "arrow", false);
+            cogDisplay1.InteractiveGraphics.Add(arrow, "arrow", false);*/
         }
 
         private void DrawToolFrm_Load(object sender, EventArgs e)
@@ -344,7 +356,8 @@ namespace CogDrawTool
             distanceComponents.TipText = string.Format("Defect No: {0}", shapeContainer.Count);
             distanceComponents.ID = 2;
             distanceComponents.ParentFromChildTransform = distanceComponents.GetParentFromChildTransform();
-
+            //distanceComponents.CompositionMode = CogCompositeShapeCompositionModeConstants.Freeform;
+            
             shapeContainer.Add(distanceComponents);
             cogDisplay1.InteractiveGraphics.Add(distanceComponents, "Distance", false);
             //Populate defect table
@@ -397,8 +410,7 @@ namespace CogDrawTool
                         index = j;
                         break;
                     }
-                }
-                Console.WriteLine("INDEX: " + index);              
+                }              
                 if (graphics[i].GetType() == typeof(CogRectangleAffine))
                 {
                     detail = string.Format("({0}, {1})", 
@@ -625,21 +637,17 @@ namespace CogDrawTool
             if (e.Button == MouseButtons.Left)
             {
                 mouseDown = true;
-                CogDisplayStatusBarV2 a = cogDisplayStatusBarV21;
-                Console.WriteLine(a.Location.X);
-                Console.WriteLine(a.Location.Y);
-                Console.WriteLine();
 
-                Console.WriteLine(Cursor.Position.X);
-                Console.WriteLine(Cursor.Position.Y);
-                
-                //a.mouse
-                
-                previousX = e.X;
-                previousY = e.Y;
+                double mappedX;
+                double mappedY;
+                cogDisplay1.GetTransform("#", "*").MapPoint(e.X, e.Y, 
+                    out mappedX, out mappedY);
+                Console.WriteLine(mappedX);
+                Console.WriteLine(mappedY);
+
+                previousX = mappedX;
+                previousY = mappedY;
             }
-            
-
 
             /*CogPointMarker point = new CogPointMarker();
             point.SetCenterRotationSize(previousX, previousY, 0, 3);
@@ -652,19 +660,26 @@ namespace CogDrawTool
             {
                 if (mouseDown)
                 {
+                    //Get the position
+                    double mappedX;
+                    double mappedY;
+                    cogDisplay1.GetTransform("#", "*").MapPoint(e.X, e.Y,
+                        out mappedX, out mappedY);
+
                     //For temporary display
                     CogLineSegment shape = new CogLineSegment();
-                    shape.SetStartEnd(previousX, previousY, e.X, e.Y);
+                    shape.SetStartEnd(previousX, previousY, mappedX, mappedY);
                     shape.LineWidthInScreenPixels = (int)UpDownLineWidth.Value;
                     //To add into CogCompositeShape
                     CogLineSegment shape2 = new CogLineSegment();
-                    shape2.SetStartEnd(previousX, previousY, e.X, e.Y);
+                    shape2.SetStartEnd(previousX, previousY, mappedX, mappedY);
                     shape2.SelectedSpaceName = "$";
 
                     cogDisplay1.InteractiveGraphics.Add(shape, "temp", false);
                     drawing.Shapes.Add(shape2);
-                    previousX = e.X;
-                    previousY = e.Y;
+
+                    previousX = mappedX;
+                    previousY = mappedY;
                 }
                 
             }
