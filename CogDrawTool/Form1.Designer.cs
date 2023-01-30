@@ -35,13 +35,6 @@ namespace CogDrawTool
             this.cogDisplayStatusBarV21 = new Cognex.VisionPro.CogDisplayStatusBarV2();
             this.cogDisplayToolbarV21 = new Cognex.VisionPro.CogDisplayToolbarV2();
             this.toolStrip1 = new System.Windows.Forms.ToolStrip();
-            this.BtnLoad = new System.Windows.Forms.ToolStripButton();
-            this.BtnRect = new System.Windows.Forms.ToolStripButton();
-            this.BtnAnnotation = new System.Windows.Forms.ToolStripButton();
-            this.BtnPoint = new System.Windows.Forms.ToolStripButton();
-            this.BtnLine = new System.Windows.Forms.ToolStripButton();
-            this.btnArrow = new System.Windows.Forms.ToolStripButton();
-            this.btnDraw = new System.Windows.Forms.ToolStripButton();
             this.OpenImgDialog = new System.Windows.Forms.OpenFileDialog();
             this.SaveImageDialog = new System.Windows.Forms.SaveFileDialog();
             this.panel1 = new System.Windows.Forms.Panel();
@@ -64,6 +57,17 @@ namespace CogDrawTool
             this.numericUpDownTest = new System.Windows.Forms.NumericUpDown();
             this.label1 = new System.Windows.Forms.Label();
             this.btnClear = new System.Windows.Forms.Button();
+            this.groupBox2 = new System.Windows.Forms.GroupBox();
+            this.RBtnMultiPointsLength = new System.Windows.Forms.RadioButton();
+            this.RBtnNone = new System.Windows.Forms.RadioButton();
+            this.RBtn2Points = new System.Windows.Forms.RadioButton();
+            this.BtnLoad = new System.Windows.Forms.ToolStripButton();
+            this.BtnRect = new System.Windows.Forms.ToolStripButton();
+            this.BtnAnnotation = new System.Windows.Forms.ToolStripButton();
+            this.BtnPoint = new System.Windows.Forms.ToolStripButton();
+            this.BtnLine = new System.Windows.Forms.ToolStripButton();
+            this.btnArrow = new System.Windows.Forms.ToolStripButton();
+            this.btnDraw = new System.Windows.Forms.ToolStripButton();
             this.btnDistance = new System.Windows.Forms.ToolStripButton();
             ((System.ComponentModel.ISupportInitialize)(this.cogDisplay1)).BeginInit();
             this.toolStrip1.SuspendLayout();
@@ -74,6 +78,7 @@ namespace CogDrawTool
             this.groupBox1.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.UpDownLineWidth)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.numericUpDownTest)).BeginInit();
+            this.groupBox2.SuspendLayout();
             this.SuspendLayout();
             // 
             // cogDisplay1
@@ -101,7 +106,7 @@ namespace CogDrawTool
             // 
             this.cogDisplayStatusBarV21.CoordinateSpaceName = "*\\#";
             this.cogDisplayStatusBarV21.CoordinateSpaceName3D = "*\\#";
-            this.cogDisplayStatusBarV21.Location = new System.Drawing.Point(83, 689);
+            this.cogDisplayStatusBarV21.Location = new System.Drawing.Point(109, 684);
             this.cogDisplayStatusBarV21.Margin = new System.Windows.Forms.Padding(4);
             this.cogDisplayStatusBarV21.Name = "cogDisplayStatusBarV21";
             this.cogDisplayStatusBarV21.RightToLeft = System.Windows.Forms.RightToLeft.No;
@@ -119,7 +124,7 @@ namespace CogDrawTool
             // 
             // toolStrip1
             // 
-            this.toolStrip1.Dock = System.Windows.Forms.DockStyle.Left;
+            this.toolStrip1.Dock = System.Windows.Forms.DockStyle.None;
             this.toolStrip1.ImageScalingSize = new System.Drawing.Size(20, 20);
             this.toolStrip1.Items.AddRange(new System.Windows.Forms.ToolStripItem[] {
             this.BtnLoad,
@@ -130,75 +135,12 @@ namespace CogDrawTool
             this.btnArrow,
             this.btnDraw,
             this.btnDistance});
+            this.toolStrip1.LayoutStyle = System.Windows.Forms.ToolStripLayoutStyle.VerticalStackWithOverflow;
             this.toolStrip1.Location = new System.Drawing.Point(0, 0);
             this.toolStrip1.Name = "toolStrip1";
-            this.toolStrip1.Size = new System.Drawing.Size(91, 736);
+            this.toolStrip1.Size = new System.Drawing.Size(87, 228);
             this.toolStrip1.TabIndex = 4;
             this.toolStrip1.Text = "toolStrip1";
-            // 
-            // BtnLoad
-            // 
-            this.BtnLoad.Image = ((System.Drawing.Image)(resources.GetObject("BtnLoad.Image")));
-            this.BtnLoad.ImageTransparentColor = System.Drawing.Color.Magenta;
-            this.BtnLoad.Name = "BtnLoad";
-            this.BtnLoad.Size = new System.Drawing.Size(88, 24);
-            this.BtnLoad.Text = "LOAD";
-            this.BtnLoad.Click += new System.EventHandler(this.BtnLoad_Click);
-            // 
-            // BtnRect
-            // 
-            this.BtnRect.Image = ((System.Drawing.Image)(resources.GetObject("BtnRect.Image")));
-            this.BtnRect.ImageTransparentColor = System.Drawing.Color.Magenta;
-            this.BtnRect.Name = "BtnRect";
-            this.BtnRect.Size = new System.Drawing.Size(88, 24);
-            this.BtnRect.Text = "RECT";
-            this.BtnRect.Click += new System.EventHandler(this.BtnRect_Click);
-            // 
-            // BtnAnnotation
-            // 
-            this.BtnAnnotation.Image = ((System.Drawing.Image)(resources.GetObject("BtnAnnotation.Image")));
-            this.BtnAnnotation.ImageTransparentColor = System.Drawing.Color.Magenta;
-            this.BtnAnnotation.Name = "BtnAnnotation";
-            this.BtnAnnotation.Size = new System.Drawing.Size(88, 24);
-            this.BtnAnnotation.Text = "TEXT";
-            this.BtnAnnotation.ToolTipText = "TEXT";
-            this.BtnAnnotation.Click += new System.EventHandler(this.BtnAnnotation_Click);
-            // 
-            // BtnPoint
-            // 
-            this.BtnPoint.Image = ((System.Drawing.Image)(resources.GetObject("BtnPoint.Image")));
-            this.BtnPoint.ImageTransparentColor = System.Drawing.Color.Magenta;
-            this.BtnPoint.Name = "BtnPoint";
-            this.BtnPoint.Size = new System.Drawing.Size(88, 24);
-            this.BtnPoint.Text = "POINT";
-            this.BtnPoint.Click += new System.EventHandler(this.BtnPoint_Click);
-            // 
-            // BtnLine
-            // 
-            this.BtnLine.Image = ((System.Drawing.Image)(resources.GetObject("BtnLine.Image")));
-            this.BtnLine.ImageTransparentColor = System.Drawing.Color.Magenta;
-            this.BtnLine.Name = "BtnLine";
-            this.BtnLine.Size = new System.Drawing.Size(88, 24);
-            this.BtnLine.Text = "LINE";
-            this.BtnLine.Click += new System.EventHandler(this.BtnLine_Click);
-            // 
-            // btnArrow
-            // 
-            this.btnArrow.Image = ((System.Drawing.Image)(resources.GetObject("btnArrow.Image")));
-            this.btnArrow.ImageTransparentColor = System.Drawing.Color.Magenta;
-            this.btnArrow.Name = "btnArrow";
-            this.btnArrow.Size = new System.Drawing.Size(88, 24);
-            this.btnArrow.Text = "ARROW";
-            this.btnArrow.Click += new System.EventHandler(this.btnArrow_Click);
-            // 
-            // btnDraw
-            // 
-            this.btnDraw.Image = ((System.Drawing.Image)(resources.GetObject("btnDraw.Image")));
-            this.btnDraw.ImageTransparentColor = System.Drawing.Color.Magenta;
-            this.btnDraw.Name = "btnDraw";
-            this.btnDraw.Size = new System.Drawing.Size(88, 24);
-            this.btnDraw.Text = "Draw";
-            this.btnDraw.Click += new System.EventHandler(this.btnDraw_Click);
             // 
             // OpenImgDialog
             // 
@@ -212,7 +154,7 @@ namespace CogDrawTool
             // 
             this.panel1.Controls.Add(this.cogDisplay1);
             this.panel1.Controls.Add(this.cogDisplayToolbarV21);
-            this.panel1.Location = new System.Drawing.Point(83, 15);
+            this.panel1.Location = new System.Drawing.Point(100, 15);
             this.panel1.Margin = new System.Windows.Forms.Padding(4);
             this.panel1.Name = "panel1";
             this.panel1.Size = new System.Drawing.Size(809, 666);
@@ -223,7 +165,7 @@ namespace CogDrawTool
             this.tabControl1.Controls.Add(this.tabPage1);
             this.tabControl1.Controls.Add(this.tabPage2);
             this.tabControl1.Controls.Add(this.tabPage3);
-            this.tabControl1.Location = new System.Drawing.Point(1067, 18);
+            this.tabControl1.Location = new System.Drawing.Point(1084, 15);
             this.tabControl1.Margin = new System.Windows.Forms.Padding(4);
             this.tabControl1.Name = "tabControl1";
             this.tabControl1.SelectedIndex = 0;
@@ -305,7 +247,7 @@ namespace CogDrawTool
             // 
             this.groupBox1.Controls.Add(this.RBtnScratch);
             this.groupBox1.Controls.Add(this.RBtnCrack);
-            this.groupBox1.Location = new System.Drawing.Point(899, 43);
+            this.groupBox1.Location = new System.Drawing.Point(916, 40);
             this.groupBox1.Name = "groupBox1";
             this.groupBox1.Size = new System.Drawing.Size(165, 151);
             this.groupBox1.TabIndex = 11;
@@ -313,7 +255,7 @@ namespace CogDrawTool
             // 
             // btnRefresh
             // 
-            this.btnRefresh.Location = new System.Drawing.Point(950, 250);
+            this.btnRefresh.Location = new System.Drawing.Point(967, 247);
             this.btnRefresh.Name = "btnRefresh";
             this.btnRefresh.Size = new System.Drawing.Size(75, 23);
             this.btnRefresh.TabIndex = 12;
@@ -323,7 +265,7 @@ namespace CogDrawTool
             // 
             // btnExport
             // 
-            this.btnExport.Location = new System.Drawing.Point(950, 299);
+            this.btnExport.Location = new System.Drawing.Point(967, 296);
             this.btnExport.Name = "btnExport";
             this.btnExport.Size = new System.Drawing.Size(75, 23);
             this.btnExport.TabIndex = 13;
@@ -333,7 +275,7 @@ namespace CogDrawTool
             // 
             // btnImport
             // 
-            this.btnImport.Location = new System.Drawing.Point(950, 328);
+            this.btnImport.Location = new System.Drawing.Point(967, 325);
             this.btnImport.Name = "btnImport";
             this.btnImport.Size = new System.Drawing.Size(75, 23);
             this.btnImport.TabIndex = 14;
@@ -343,7 +285,7 @@ namespace CogDrawTool
             // 
             // btnTest
             // 
-            this.btnTest.Location = new System.Drawing.Point(903, 557);
+            this.btnTest.Location = new System.Drawing.Point(920, 554);
             this.btnTest.Name = "btnTest";
             this.btnTest.Size = new System.Drawing.Size(75, 23);
             this.btnTest.TabIndex = 15;
@@ -353,7 +295,7 @@ namespace CogDrawTool
             // 
             // UpDownLineWidth
             // 
-            this.UpDownLineWidth.Location = new System.Drawing.Point(1009, 213);
+            this.UpDownLineWidth.Location = new System.Drawing.Point(1026, 210);
             this.UpDownLineWidth.Minimum = new decimal(new int[] {
             1,
             0,
@@ -376,7 +318,7 @@ namespace CogDrawTool
             // 
             // btnTest2
             // 
-            this.btnTest2.Location = new System.Drawing.Point(989, 557);
+            this.btnTest2.Location = new System.Drawing.Point(1006, 554);
             this.btnTest2.Name = "btnTest2";
             this.btnTest2.Size = new System.Drawing.Size(75, 23);
             this.btnTest2.TabIndex = 17;
@@ -397,7 +339,7 @@ namespace CogDrawTool
             // numericUpDownTest
             // 
             this.numericUpDownTest.DecimalPlaces = 2;
-            this.numericUpDownTest.Location = new System.Drawing.Point(923, 529);
+            this.numericUpDownTest.Location = new System.Drawing.Point(940, 526);
             this.numericUpDownTest.Minimum = new decimal(new int[] {
             1,
             0,
@@ -415,7 +357,7 @@ namespace CogDrawTool
             // label1
             // 
             this.label1.AutoSize = true;
-            this.label1.Location = new System.Drawing.Point(916, 215);
+            this.label1.Location = new System.Drawing.Point(933, 212);
             this.label1.Name = "label1";
             this.label1.Size = new System.Drawing.Size(87, 16);
             this.label1.TabIndex = 20;
@@ -423,7 +365,7 @@ namespace CogDrawTool
             // 
             // btnClear
             // 
-            this.btnClear.Location = new System.Drawing.Point(950, 430);
+            this.btnClear.Location = new System.Drawing.Point(967, 427);
             this.btnClear.Name = "btnClear";
             this.btnClear.Size = new System.Drawing.Size(75, 23);
             this.btnClear.TabIndex = 21;
@@ -431,20 +373,140 @@ namespace CogDrawTool
             this.btnClear.UseVisualStyleBackColor = true;
             this.btnClear.Click += new System.EventHandler(this.btnClear_Click);
             // 
+            // groupBox2
+            // 
+            this.groupBox2.Controls.Add(this.RBtnMultiPointsLength);
+            this.groupBox2.Controls.Add(this.RBtnNone);
+            this.groupBox2.Controls.Add(this.RBtn2Points);
+            this.groupBox2.Location = new System.Drawing.Point(0, 328);
+            this.groupBox2.Name = "groupBox2";
+            this.groupBox2.Size = new System.Drawing.Size(96, 396);
+            this.groupBox2.TabIndex = 22;
+            this.groupBox2.TabStop = false;
+            this.groupBox2.Text = "Tools";
+            // 
+            // RBtnMultiPointsLength
+            // 
+            this.RBtnMultiPointsLength.Appearance = System.Windows.Forms.Appearance.Button;
+            this.RBtnMultiPointsLength.BackgroundImage = global::CogDrawTool.Properties.Resources.multiPointsLength;
+            this.RBtnMultiPointsLength.BackgroundImageLayout = System.Windows.Forms.ImageLayout.Stretch;
+            this.RBtnMultiPointsLength.Location = new System.Drawing.Point(52, 21);
+            this.RBtnMultiPointsLength.Name = "RBtnMultiPointsLength";
+            this.RBtnMultiPointsLength.Size = new System.Drawing.Size(40, 40);
+            this.RBtnMultiPointsLength.TabIndex = 2;
+            this.RBtnMultiPointsLength.TabStop = true;
+            this.RBtnMultiPointsLength.Tag = "2";
+            this.RBtnMultiPointsLength.UseVisualStyleBackColor = true;
+            this.RBtnMultiPointsLength.CheckedChanged += new System.EventHandler(this.MultiToolRBtn_CheckedChanged);
+            this.RBtnMultiPointsLength.Click += new System.EventHandler(this.RBtnMultiPointsLength_Click);
+            // 
+            // RBtnNone
+            // 
+            this.RBtnNone.Appearance = System.Windows.Forms.Appearance.Button;
+            this.RBtnNone.BackgroundImage = global::CogDrawTool.Properties.Resources.none;
+            this.RBtnNone.BackgroundImageLayout = System.Windows.Forms.ImageLayout.Stretch;
+            this.RBtnNone.Location = new System.Drawing.Point(6, 209);
+            this.RBtnNone.Name = "RBtnNone";
+            this.RBtnNone.Size = new System.Drawing.Size(40, 40);
+            this.RBtnNone.TabIndex = 1;
+            this.RBtnNone.TabStop = true;
+            this.RBtnNone.Tag = "0";
+            this.RBtnNone.UseVisualStyleBackColor = true;
+            this.RBtnNone.CheckedChanged += new System.EventHandler(this.MultiToolRBtn_CheckedChanged);
+            // 
+            // RBtn2Points
+            // 
+            this.RBtn2Points.Appearance = System.Windows.Forms.Appearance.Button;
+            this.RBtn2Points.BackgroundImage = global::CogDrawTool.Properties.Resources._2points;
+            this.RBtn2Points.BackgroundImageLayout = System.Windows.Forms.ImageLayout.Stretch;
+            this.RBtn2Points.Location = new System.Drawing.Point(6, 21);
+            this.RBtn2Points.Name = "RBtn2Points";
+            this.RBtn2Points.Size = new System.Drawing.Size(40, 40);
+            this.RBtn2Points.TabIndex = 0;
+            this.RBtn2Points.TabStop = true;
+            this.RBtn2Points.Tag = "2";
+            this.RBtn2Points.UseVisualStyleBackColor = true;
+            this.RBtn2Points.CheckedChanged += new System.EventHandler(this.MultiToolRBtn_CheckedChanged);
+            // 
+            // BtnLoad
+            // 
+            this.BtnLoad.Image = ((System.Drawing.Image)(resources.GetObject("BtnLoad.Image")));
+            this.BtnLoad.ImageTransparentColor = System.Drawing.Color.Magenta;
+            this.BtnLoad.Name = "BtnLoad";
+            this.BtnLoad.Size = new System.Drawing.Size(85, 24);
+            this.BtnLoad.Text = "LOAD";
+            this.BtnLoad.Click += new System.EventHandler(this.BtnLoad_Click);
+            // 
+            // BtnRect
+            // 
+            this.BtnRect.Image = ((System.Drawing.Image)(resources.GetObject("BtnRect.Image")));
+            this.BtnRect.ImageTransparentColor = System.Drawing.Color.Magenta;
+            this.BtnRect.Name = "BtnRect";
+            this.BtnRect.Size = new System.Drawing.Size(85, 24);
+            this.BtnRect.Text = "RECT";
+            this.BtnRect.Click += new System.EventHandler(this.BtnRect_Click);
+            // 
+            // BtnAnnotation
+            // 
+            this.BtnAnnotation.Image = ((System.Drawing.Image)(resources.GetObject("BtnAnnotation.Image")));
+            this.BtnAnnotation.ImageTransparentColor = System.Drawing.Color.Magenta;
+            this.BtnAnnotation.Name = "BtnAnnotation";
+            this.BtnAnnotation.Size = new System.Drawing.Size(85, 24);
+            this.BtnAnnotation.Text = "TEXT";
+            this.BtnAnnotation.ToolTipText = "TEXT";
+            this.BtnAnnotation.Click += new System.EventHandler(this.BtnAnnotation_Click);
+            // 
+            // BtnPoint
+            // 
+            this.BtnPoint.Image = ((System.Drawing.Image)(resources.GetObject("BtnPoint.Image")));
+            this.BtnPoint.ImageTransparentColor = System.Drawing.Color.Magenta;
+            this.BtnPoint.Name = "BtnPoint";
+            this.BtnPoint.Size = new System.Drawing.Size(85, 24);
+            this.BtnPoint.Text = "POINT";
+            this.BtnPoint.Click += new System.EventHandler(this.BtnPoint_Click);
+            // 
+            // BtnLine
+            // 
+            this.BtnLine.Image = ((System.Drawing.Image)(resources.GetObject("BtnLine.Image")));
+            this.BtnLine.ImageTransparentColor = System.Drawing.Color.Magenta;
+            this.BtnLine.Name = "BtnLine";
+            this.BtnLine.Size = new System.Drawing.Size(85, 24);
+            this.BtnLine.Text = "LINE";
+            this.BtnLine.Click += new System.EventHandler(this.BtnLine_Click);
+            // 
+            // btnArrow
+            // 
+            this.btnArrow.Image = ((System.Drawing.Image)(resources.GetObject("btnArrow.Image")));
+            this.btnArrow.ImageTransparentColor = System.Drawing.Color.Magenta;
+            this.btnArrow.Name = "btnArrow";
+            this.btnArrow.Size = new System.Drawing.Size(85, 24);
+            this.btnArrow.Text = "ARROW";
+            this.btnArrow.Click += new System.EventHandler(this.btnArrow_Click);
+            // 
+            // btnDraw
+            // 
+            this.btnDraw.Image = ((System.Drawing.Image)(resources.GetObject("btnDraw.Image")));
+            this.btnDraw.ImageTransparentColor = System.Drawing.Color.Magenta;
+            this.btnDraw.Name = "btnDraw";
+            this.btnDraw.Size = new System.Drawing.Size(85, 24);
+            this.btnDraw.Text = "DRAW";
+            this.btnDraw.Click += new System.EventHandler(this.btnDraw_Click);
+            // 
             // btnDistance
             // 
             this.btnDistance.Image = ((System.Drawing.Image)(resources.GetObject("btnDistance.Image")));
             this.btnDistance.ImageTransparentColor = System.Drawing.Color.Magenta;
             this.btnDistance.Name = "btnDistance";
-            this.btnDistance.Size = new System.Drawing.Size(88, 24);
-            this.btnDistance.Text = "Distance";
+            this.btnDistance.Size = new System.Drawing.Size(85, 24);
+            this.btnDistance.Text = "DIST";
             this.btnDistance.Click += new System.EventHandler(this.btnDistance_Click);
             // 
             // DrawToolFrm
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(8F, 16F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-            this.ClientSize = new System.Drawing.Size(1779, 736);
+            this.ClientSize = new System.Drawing.Size(1791, 736);
+            this.Controls.Add(this.groupBox2);
             this.Controls.Add(this.btnClear);
             this.Controls.Add(this.label1);
             this.Controls.Add(this.cogDisplayStatusBarV21);
@@ -474,6 +536,7 @@ namespace CogDrawTool
             this.groupBox1.ResumeLayout(false);
             ((System.ComponentModel.ISupportInitialize)(this.UpDownLineWidth)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.numericUpDownTest)).EndInit();
+            this.groupBox2.ResumeLayout(false);
             this.ResumeLayout(false);
             this.PerformLayout();
 
@@ -514,6 +577,10 @@ namespace CogDrawTool
         private System.Windows.Forms.ToolStripButton btnDraw;
         private System.Windows.Forms.Button btnClear;
         private System.Windows.Forms.ToolStripButton btnDistance;
+        private System.Windows.Forms.GroupBox groupBox2;
+        private System.Windows.Forms.RadioButton RBtnNone;
+        private System.Windows.Forms.RadioButton RBtn2Points;
+        private System.Windows.Forms.RadioButton RBtnMultiPointsLength;
     }
 }
 

@@ -23,6 +23,7 @@ using QWhale.Editor.TextSource;
 using static System.Windows.Forms.AxHost;
 using System.Drawing.Printing;
 using System.Windows.Media.Effects;
+using System.Windows.Media.Imaging;
 //using Accord.Math.Geometry;
 
 namespace CogDrawTool
@@ -39,6 +40,9 @@ namespace CogDrawTool
         private double previousX = -1;
         private double previousY = -1;
         private CogCompositeShape drawing;
+        //Multi-Press Tools
+        private int multiToolSteps;
+        private List<Tuple<double, double>> multiToolPositions = new List<Tuple<double, double>>();
 
         public delegate void DisplayImageDelegate(Bitmap frameBuffer);
 
@@ -110,32 +114,9 @@ namespace CogDrawTool
 
         private void btnTest3_Click(object sender, EventArgs e)
         {
-            Console.WriteLine("BUTTOM 3");
+            Console.WriteLine("BUTTON 3");
 
-                        
-
-
-            /*CogCompositeShape arrow = new CogCompositeShape();
-            arrow.GraphicDOFEnable = CogCompositeShapeDOFConstants.All;
-            arrow.CompositionMode = CogCompositeShapeCompositionModeConstants.Uniform;
-            arrow.Interactive = true;
-            arrow.Color = CogColorConstants.Red;
-            arrow.Visible = true;
             
-            CogLineSegment cogLineSegment = new CogLineSegment();
-            cogLineSegment.SetStartLengthRotation(500, 500, 50, 0);
-            cogLineSegment.SelectedSpaceName = "$";
-            
-            CogLineSegment cogLineSegment2 = new CogLineSegment();
-            cogLineSegment2.SetStartLengthRotation(500, 500, 100, 100);
-            cogLineSegment2.SelectedSpaceName = "$";
-
-            arrow.Shapes.Add(cogLineSegment);
-            arrow.Shapes.Add(cogLineSegment2);
-            //Must call this
-            arrow.ParentFromChildTransform = arrow.GetParentFromChildTransform();
-
-            cogDisplay1.InteractiveGraphics.Add(arrow, "arrow", false);*/
         }
 
         private void DrawToolFrm_Load(object sender, EventArgs e)
@@ -164,6 +145,9 @@ namespace CogDrawTool
             drawingMode = false;
             mouseDown = false;
             btnDraw.BackColor = Color.Green;
+
+            //Multi-Press tools settings
+            RBtnNone.Checked = true;
 
             //Create new DataTable
             CreateDefectListTable();
@@ -636,22 +620,64 @@ namespace CogDrawTool
         {
             if (e.Button == MouseButtons.Left)
             {
+                //For drawings
                 mouseDown = true;
-
                 double mappedX;
                 double mappedY;
-                cogDisplay1.GetTransform("#", "*").MapPoint(e.X, e.Y, 
+                cogDisplay1.GetTransform("#", "*").MapPoint(e.X, e.Y,
                     out mappedX, out mappedY);
-                Console.WriteLine(mappedX);
-                Console.WriteLine(mappedY);
 
-                previousX = mappedX;
-                previousY = mappedY;
+                if (drawingMode)
+                {
+                    previousX = mappedX;
+                    previousY = mappedY;
+                }
+
+                //For Multi-Press tools
+                if (RBtn2Points.Checked)
+                {
+                    if (2 == multiToolSteps)
+                    {
+                        //For temporary display
+                        CogLineSegment line = new CogLineSegment();
+                        line.SetStartLengthRotation(mappedX, mappedY, 1, 0);
+                        line.LineWidthInScreenPixels = (int)UpDownLineWidth.Value;
+                        cogDisplay1.InteractiveGraphics.Add(line, "temp", false);
+
+                        multiToolPositions.Add(new Tuple<double, double>(mappedX, mappedY));
+                        multiToolSteps -= 1;
+                    }
+                    else if (1 == multiToolSteps)
+                    {
+                        CogLineSegment line = new CogLineSegment();
+                        line.SetStartEnd(multiToolPositions[0].Item1, 
+                            multiToolPositions[0].Item2, mappedX, mappedY);
+                        line.GraphicDOFEnable = CogLineSegmentDOFConstants.BothPoints;
+                        line.Interactive = true;
+                        line.TipText = string.Format("Defect No: {0}", shapeContainer.Count);
+                        line.LineWidthInScreenPixels = (int)UpDownLineWidth.Value;
+                        cogDisplay1.InteractiveGraphics.Add(line, "Line", false);
+                        shapeContainer.Add(line);
+                        //Populate defect table
+                        string detail = string.Format("Length: {0}", line.Length);
+                        defectTable.Rows.Add(defectTable.Rows.Count, defectCategory, detail);
+
+                        multiToolSteps -= 1;
+                        RBtnNone.Checked = true;
+                    }
+                }
+                else if (RBtnMultiPointsLength.Checked)
+                {
+                    //For temporary display
+                    CogLineSegment line = new CogLineSegment();
+                    line.SetStartLengthRotation(mappedX, mappedY, 1, 0);
+                    line.LineWidthInScreenPixels = (int)UpDownLineWidth.Value;
+                    cogDisplay1.InteractiveGraphics.Add(line, "temp", false);
+
+                    multiToolPositions.Add(new Tuple<double, double>(mappedX, mappedY));
+                }
+                
             }
-
-            /*CogPointMarker point = new CogPointMarker();
-            point.SetCenterRotationSize(previousX, previousY, 0, 3);
-            cogDisplay1.InteractiveGraphics.Add(point, "a", false);*/
         }   
 
         private void cogDisplay1_MouseMove(object sender, MouseEventArgs e)
@@ -708,7 +734,7 @@ namespace CogDrawTool
                 {
                     shapeContainer.Add(drawing);
                     cogDisplay1.InteractiveGraphics.Add(drawing, "Drawing", false);
-                    //Remove the temporary drawing
+                    //Remove temporary drawings
                     cogDisplay1.InteractiveGraphics.Remove("temp");
                     // Populate defect table
                     string detail = string.Format("{0}", "Enter your details");
@@ -732,7 +758,7 @@ namespace CogDrawTool
                 drawing.GraphicDOFEnable = CogCompositeShapeDOFConstants.All;
                 drawing.LineWidthInScreenPixels = (int)UpDownLineWidth.Value;
                 drawing.TipText = string.Format("Defect No: {0}", shapeContainer.Count);
-                drawing.ID = 1;   //Signified a drawing
+                drawing.ID = 1;   //Signifies a drawing
                 drawing.ParentFromChildTransform = drawing.GetParentFromChildTransform();
             }
         }
@@ -744,6 +770,55 @@ namespace CogDrawTool
             shapeContainer.Clear();
         }
 
-        
+        private void MultiToolRBtn_CheckedChanged(object sender, EventArgs e)
+        {
+            // Remove any temporary drawings after the mode successfully
+            //finishes or changes.
+            if (0 < multiToolPositions.Count)
+            {
+                //Remove temporary drawings
+                cogDisplay1.InteractiveGraphics.Remove("temp");
+            }
+            
+            multiToolSteps = int.Parse((sender as RadioButton).Tag.ToString());
+            multiToolPositions = new List<Tuple<double, double>>();
+
+        }
+
+        private void RBtnMultiPointsLength_Click(object sender, EventArgs e)
+        {
+            //If previous mode is Multi-Points length 
+            if (RBtnMultiPointsLength.Checked && 1 < multiToolPositions.Count)
+            {
+                double totalLength = 0;
+                CogCompositeShape compositeShape = new CogCompositeShape();
+                compositeShape.Interactive = true;
+                compositeShape.GraphicDOFEnable = CogCompositeShapeDOFConstants.Position;
+                compositeShape.LineWidthInScreenPixels = (int)UpDownLineWidth.Value;
+                compositeShape.TipText = string.Format("Defect No: {0}", shapeContainer.Count);
+                compositeShape.ID = 100;   //Just a random number for now
+
+                for (int i = 0; i < multiToolPositions.Count - 1; i++)
+                {
+                    //Create and add each lines into composite shape
+                    CogLineSegment cogLineSegment = new CogLineSegment();
+                    cogLineSegment.SelectedSpaceName = "$";
+                    cogLineSegment.SetStartEnd(multiToolPositions[i].Item1,
+                        multiToolPositions[i].Item2, multiToolPositions[i + 1].Item1,
+                        multiToolPositions[i + 1].Item2);
+                    compositeShape.Shapes.Add(cogLineSegment);
+                    //Update the total length
+                    totalLength += cogLineSegment.Length;
+                }
+
+                shapeContainer.Add(compositeShape);
+                cogDisplay1.InteractiveGraphics.Add(compositeShape, "Multi-Point length", false);
+                // Populate defect table
+                string detail = string.Format("Total Length: {0}", totalLength);
+                defectTable.Rows.Add(defectTable.Rows.Count, defectCategory, detail);
+
+                RBtnNone.Checked = true;
+            }
+        }
     }
 }
