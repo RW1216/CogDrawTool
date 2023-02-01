@@ -387,6 +387,7 @@ namespace CogDrawTool
             0,
             0,
             0});
+            this.UpDownLineWidth.ValueChanged += new System.EventHandler(this.UpDownLineWidth_ValueChanged);
             // 
             // imageList1
             // 
