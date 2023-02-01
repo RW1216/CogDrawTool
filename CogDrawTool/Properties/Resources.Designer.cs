@@ -83,6 +83,26 @@ namespace CogDrawTool.Properties {
         /// <summary>
         ///   Looks up a localized resource of type System.Drawing.Bitmap.
         /// </summary>
+        internal static System.Drawing.Bitmap angle2 {
+            get {
+                object obj = ResourceManager.GetObject("angle2", resourceCulture);
+                return ((System.Drawing.Bitmap)(obj));
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized resource of type System.Drawing.Bitmap.
+        /// </summary>
+        internal static System.Drawing.Bitmap doubleCircleMidLength {
+            get {
+                object obj = ResourceManager.GetObject("doubleCircleMidLength", resourceCulture);
+                return ((System.Drawing.Bitmap)(obj));
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized resource of type System.Drawing.Bitmap.
+        /// </summary>
         internal static System.Drawing.Bitmap multiPointsLength {
             get {
                 object obj = ResourceManager.GetObject("multiPointsLength", resourceCulture);
@@ -96,6 +116,16 @@ namespace CogDrawTool.Properties {
         internal static System.Drawing.Bitmap none {
             get {
                 object obj = ResourceManager.GetObject("none", resourceCulture);
+                return ((System.Drawing.Bitmap)(obj));
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized resource of type System.Drawing.Bitmap.
+        /// </summary>
+        internal static System.Drawing.Bitmap perpendicularLength {
+            get {
+                object obj = ResourceManager.GetObject("perpendicularLength", resourceCulture);
                 return ((System.Drawing.Bitmap)(obj));
             }
         }

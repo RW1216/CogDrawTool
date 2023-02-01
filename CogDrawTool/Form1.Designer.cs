@@ -58,7 +58,11 @@ namespace CogDrawTool
             this.label1 = new System.Windows.Forms.Label();
             this.btnClear = new System.Windows.Forms.Button();
             this.groupBox2 = new System.Windows.Forms.GroupBox();
-            this.RBtnAngle1 = new System.Windows.Forms.RadioButton();
+            this.RBtn2CircleLength = new System.Windows.Forms.RadioButton();
+            this.RBtnPerpLength = new System.Windows.Forms.RadioButton();
+            this.RBtn2LineAngle = new System.Windows.Forms.RadioButton();
+            this.RBtnSingleRadius = new System.Windows.Forms.RadioButton();
+            this.RBtnTrigAngle = new System.Windows.Forms.RadioButton();
             this.RBtnMultiPointsLength = new System.Windows.Forms.RadioButton();
             this.RBtnNone = new System.Windows.Forms.RadioButton();
             this.RBtn2Points = new System.Windows.Forms.RadioButton();
@@ -70,7 +74,6 @@ namespace CogDrawTool
             this.btnArrow = new System.Windows.Forms.ToolStripButton();
             this.btnDraw = new System.Windows.Forms.ToolStripButton();
             this.btnDistance = new System.Windows.Forms.ToolStripButton();
-            this.RBtnSingleRadius = new System.Windows.Forms.RadioButton();
             ((System.ComponentModel.ISupportInitialize)(this.cogDisplay1)).BeginInit();
             this.toolStrip1.SuspendLayout();
             this.panel1.SuspendLayout();
@@ -377,8 +380,11 @@ namespace CogDrawTool
             // 
             // groupBox2
             // 
+            this.groupBox2.Controls.Add(this.RBtn2CircleLength);
+            this.groupBox2.Controls.Add(this.RBtnPerpLength);
+            this.groupBox2.Controls.Add(this.RBtn2LineAngle);
             this.groupBox2.Controls.Add(this.RBtnSingleRadius);
-            this.groupBox2.Controls.Add(this.RBtnAngle1);
+            this.groupBox2.Controls.Add(this.RBtnTrigAngle);
             this.groupBox2.Controls.Add(this.RBtnMultiPointsLength);
             this.groupBox2.Controls.Add(this.RBtnNone);
             this.groupBox2.Controls.Add(this.RBtn2Points);
@@ -389,18 +395,72 @@ namespace CogDrawTool
             this.groupBox2.TabStop = false;
             this.groupBox2.Text = "Tools";
             // 
-            // RBtnAngle1
+            // RBtn2CircleLength
             // 
-            this.RBtnAngle1.Appearance = System.Windows.Forms.Appearance.Button;
-            this.RBtnAngle1.BackgroundImage = global::CogDrawTool.Properties.Resources.angle1;
-            this.RBtnAngle1.BackgroundImageLayout = System.Windows.Forms.ImageLayout.Stretch;
-            this.RBtnAngle1.Location = new System.Drawing.Point(52, 67);
-            this.RBtnAngle1.Name = "RBtnAngle1";
-            this.RBtnAngle1.Size = new System.Drawing.Size(40, 40);
-            this.RBtnAngle1.TabIndex = 3;
-            this.RBtnAngle1.TabStop = true;
-            this.RBtnAngle1.Tag = "3";
-            this.RBtnAngle1.UseVisualStyleBackColor = true;
+            this.RBtn2CircleLength.Appearance = System.Windows.Forms.Appearance.Button;
+            this.RBtn2CircleLength.BackgroundImage = global::CogDrawTool.Properties.Resources.doubleCircleMidLength;
+            this.RBtn2CircleLength.BackgroundImageLayout = System.Windows.Forms.ImageLayout.Stretch;
+            this.RBtn2CircleLength.Location = new System.Drawing.Point(6, 159);
+            this.RBtn2CircleLength.Name = "RBtn2CircleLength";
+            this.RBtn2CircleLength.Size = new System.Drawing.Size(40, 40);
+            this.RBtn2CircleLength.TabIndex = 7;
+            this.RBtn2CircleLength.TabStop = true;
+            this.RBtn2CircleLength.Tag = "2";
+            this.RBtn2CircleLength.UseVisualStyleBackColor = true;
+            // 
+            // RBtnPerpLength
+            // 
+            this.RBtnPerpLength.Appearance = System.Windows.Forms.Appearance.Button;
+            this.RBtnPerpLength.BackgroundImage = global::CogDrawTool.Properties.Resources.perpendicularLength;
+            this.RBtnPerpLength.BackgroundImageLayout = System.Windows.Forms.ImageLayout.Stretch;
+            this.RBtnPerpLength.Location = new System.Drawing.Point(52, 113);
+            this.RBtnPerpLength.Name = "RBtnPerpLength";
+            this.RBtnPerpLength.Size = new System.Drawing.Size(40, 40);
+            this.RBtnPerpLength.TabIndex = 6;
+            this.RBtnPerpLength.TabStop = true;
+            this.RBtnPerpLength.Tag = "3";
+            this.RBtnPerpLength.UseVisualStyleBackColor = true;
+            // 
+            // RBtn2LineAngle
+            // 
+            this.RBtn2LineAngle.Appearance = System.Windows.Forms.Appearance.Button;
+            this.RBtn2LineAngle.BackgroundImage = global::CogDrawTool.Properties.Resources.angle2;
+            this.RBtn2LineAngle.BackgroundImageLayout = System.Windows.Forms.ImageLayout.Stretch;
+            this.RBtn2LineAngle.Location = new System.Drawing.Point(6, 113);
+            this.RBtn2LineAngle.Name = "RBtn2LineAngle";
+            this.RBtn2LineAngle.Size = new System.Drawing.Size(40, 40);
+            this.RBtn2LineAngle.TabIndex = 5;
+            this.RBtn2LineAngle.TabStop = true;
+            this.RBtn2LineAngle.Tag = "4";
+            this.RBtn2LineAngle.UseVisualStyleBackColor = true;
+            // 
+            // RBtnSingleRadius
+            // 
+            this.RBtnSingleRadius.Appearance = System.Windows.Forms.Appearance.Button;
+            this.RBtnSingleRadius.BackgroundImage = global::CogDrawTool.Properties.Resources.singleRadius;
+            this.RBtnSingleRadius.BackgroundImageLayout = System.Windows.Forms.ImageLayout.Stretch;
+            this.RBtnSingleRadius.Location = new System.Drawing.Point(6, 67);
+            this.RBtnSingleRadius.Name = "RBtnSingleRadius";
+            this.RBtnSingleRadius.Size = new System.Drawing.Size(40, 40);
+            this.RBtnSingleRadius.TabIndex = 4;
+            this.RBtnSingleRadius.TabStop = true;
+            this.RBtnSingleRadius.Tag = "2";
+            this.RBtnSingleRadius.UseVisualStyleBackColor = true;
+            this.RBtnSingleRadius.CheckedChanged += new System.EventHandler(this.MultiToolRBtn_CheckedChanged);
+            // 
+            // RBtnTrigAngle
+            // 
+            this.RBtnTrigAngle.Appearance = System.Windows.Forms.Appearance.Button;
+            this.RBtnTrigAngle.BackgroundImage = global::CogDrawTool.Properties.Resources.angle1;
+            this.RBtnTrigAngle.BackgroundImageLayout = System.Windows.Forms.ImageLayout.Stretch;
+            this.RBtnTrigAngle.Location = new System.Drawing.Point(52, 67);
+            this.RBtnTrigAngle.Name = "RBtnTrigAngle";
+            this.RBtnTrigAngle.Size = new System.Drawing.Size(40, 40);
+            this.RBtnTrigAngle.TabIndex = 3;
+            this.RBtnTrigAngle.TabStop = true;
+            this.RBtnTrigAngle.Tag = "3";
+            this.RBtnTrigAngle.UseVisualStyleBackColor = true;
+            this.RBtnTrigAngle.CheckedChanged += new System.EventHandler(this.MultiToolRBtn_CheckedChanged);
             // 
             // RBtnMultiPointsLength
             // 
@@ -422,7 +482,7 @@ namespace CogDrawTool
             this.RBtnNone.Appearance = System.Windows.Forms.Appearance.Button;
             this.RBtnNone.BackgroundImage = global::CogDrawTool.Properties.Resources.none;
             this.RBtnNone.BackgroundImageLayout = System.Windows.Forms.ImageLayout.Stretch;
-            this.RBtnNone.Location = new System.Drawing.Point(52, 180);
+            this.RBtnNone.Location = new System.Drawing.Point(52, 159);
             this.RBtnNone.Name = "RBtnNone";
             this.RBtnNone.Size = new System.Drawing.Size(40, 40);
             this.RBtnNone.TabIndex = 1;
@@ -518,19 +578,6 @@ namespace CogDrawTool
             this.btnDistance.Text = "DIST";
             this.btnDistance.Click += new System.EventHandler(this.btnDistance_Click);
             // 
-            // RBtnSingleRadius
-            // 
-            this.RBtnSingleRadius.Appearance = System.Windows.Forms.Appearance.Button;
-            this.RBtnSingleRadius.BackgroundImage = global::CogDrawTool.Properties.Resources.singleRadius;
-            this.RBtnSingleRadius.BackgroundImageLayout = System.Windows.Forms.ImageLayout.Stretch;
-            this.RBtnSingleRadius.Location = new System.Drawing.Point(6, 67);
-            this.RBtnSingleRadius.Name = "RBtnSingleRadius";
-            this.RBtnSingleRadius.Size = new System.Drawing.Size(40, 40);
-            this.RBtnSingleRadius.TabIndex = 4;
-            this.RBtnSingleRadius.TabStop = true;
-            this.RBtnSingleRadius.Tag = "3";
-            this.RBtnSingleRadius.UseVisualStyleBackColor = true;
-            // 
             // DrawToolFrm
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(8F, 16F);
@@ -611,8 +658,11 @@ namespace CogDrawTool
         private System.Windows.Forms.RadioButton RBtnNone;
         private System.Windows.Forms.RadioButton RBtn2Points;
         private System.Windows.Forms.RadioButton RBtnMultiPointsLength;
-        private System.Windows.Forms.RadioButton RBtnAngle1;
+        private System.Windows.Forms.RadioButton RBtnTrigAngle;
         private System.Windows.Forms.RadioButton RBtnSingleRadius;
+        private System.Windows.Forms.RadioButton RBtn2CircleLength;
+        private System.Windows.Forms.RadioButton RBtnPerpLength;
+        private System.Windows.Forms.RadioButton RBtn2LineAngle;
     }
 }
 
