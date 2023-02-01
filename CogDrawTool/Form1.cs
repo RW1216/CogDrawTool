@@ -24,6 +24,7 @@ using static System.Windows.Forms.AxHost;
 using System.Drawing.Printing;
 using System.Windows.Media.Effects;
 using System.Windows.Media.Imaging;
+using QWhale.Common;
 //using Accord.Math.Geometry;
 
 namespace CogDrawTool
@@ -107,21 +108,12 @@ namespace CogDrawTool
 
         private void btnTest2_Click(object sender, EventArgs e)
         {
+            Console.WriteLine("BUTTON 2");
             if (shapeContainer[0].GetType() == typeof(CogCompositeShape))
             {
-                if (((CogCompositeShape)shapeContainer[0]).CompositionMode == CogCompositeShapeCompositionModeConstants.Uniform)
-                {
-                    ((CogCompositeShape)shapeContainer[0]).CompositionMode = CogCompositeShapeCompositionModeConstants.Freeform;
-                    CogCompositeShape shape = (CogCompositeShape)shapeContainer[0];
-                    Console.WriteLine(((CogLineSegment)shape.Shapes[0]).Length);
-                }
-                else
-                {
-                    ((CogCompositeShape)shapeContainer[0]).CompositionMode = CogCompositeShapeCompositionModeConstants.Uniform;
-                    CogCompositeShape shape = (CogCompositeShape)shapeContainer[0];
-                    Console.WriteLine(((CogLineSegment)shape.Shapes[0]).Length);
-                }
+                CogCompositeShape compositeShape = (CogCompositeShape)shapeContainer[0];
                 
+                CogLineSegment line = (CogLineSegment)compositeShape.Shapes[1];
             }
         }
 
@@ -648,13 +640,7 @@ namespace CogDrawTool
                 {
                     if (2 == multiToolSteps)
                     {
-                        //For temporary display
-                        CogLineSegment line = new CogLineSegment();
-                        line.SetStartLengthRotation(mappedX, mappedY, 0.001, 0);
-                        line.LineWidthInScreenPixels = (int)UpDownLineWidth.Value * 2;
-                        cogDisplay1.InteractiveGraphics.Add(line, "temp", false);
-
-                        multiToolPositions.Add(new Tuple<double, double>(mappedX, mappedY));
+                        AddTemporaryPoint(mappedX, mappedY);
                     }
                     else if (1 == multiToolSteps)
                     {
@@ -672,27 +658,24 @@ namespace CogDrawTool
                         defectTable.Rows.Add(defectTable.Rows.Count, defectCategory, detail);
 
                         RBtnNone.Checked = true;
-                    }
-                    //Decrement for 2 points length
+                    }                   
                     multiToolSteps -= 1;
+                    if (0 < multiToolSteps)
+                    {
+                        multiToolPositions.Add(new Tuple<double, double>(mappedX, mappedY));
+                    }
                 }
                 else if (RBtnMultiPointsLength.Checked)
                 {
                     if (multiToolSteps == 9999)
                     {
-                        //For temporary display
-                        CogLineSegment line = new CogLineSegment();
-                        line.SetStartLengthRotation(mappedX, mappedY, 0.001, 0);
-                        line.LineWidthInScreenPixels = (int)UpDownLineWidth.Value;
-                        cogDisplay1.InteractiveGraphics.Add(line, "temp", false);
+                        AddTemporaryPoint(mappedX, mappedY);
                     }
                     else if (multiToolSteps < 9999)
                     {
-                        CogLineSegment line = new CogLineSegment();
                         int index = multiToolPositions.Count - 1;
-                        line.SetStartEnd(multiToolPositions[index].Item1, 
+                        AddTemporaryLine(multiToolPositions[index].Item1,
                             multiToolPositions[index].Item2, mappedX, mappedY);
-                        cogDisplay1.InteractiveGraphics.Add(line, "temp", false);
                     }
                     
                     multiToolPositions.Add(new Tuple<double, double>(mappedX, mappedY));
@@ -703,24 +686,13 @@ namespace CogDrawTool
                 {
                     if (3 == multiToolSteps)
                     {
-                        //For temporary display
-                        CogLineSegment line = new CogLineSegment();
-                        line.SetStartLengthRotation(mappedX, mappedY, 0.001, 0);
-                        line.LineWidthInScreenPixels = (int)UpDownLineWidth.Value * 2;
-                        cogDisplay1.InteractiveGraphics.Add(line, "temp", false);
-
-                        multiToolPositions.Add(new Tuple<double, double>(mappedX, mappedY));
+                        AddTemporaryPoint(mappedX, mappedY);
                     }
                     else if (2 == multiToolSteps)
                     {
-                        //For temporary display
-                        CogLineSegment line = new CogLineSegment();
                         int index = multiToolPositions.Count - 1;
-                        line.SetStartEnd(multiToolPositions[index].Item1,
+                        AddTemporaryLine(multiToolPositions[index].Item1,
                             multiToolPositions[index].Item2, mappedX, mappedY);
-                        cogDisplay1.InteractiveGraphics.Add(line, "temp", false);
-
-                        multiToolPositions.Add(new Tuple<double, double>(mappedX, mappedY));
                     }
                     else if (1 == multiToolSteps)
                     {
@@ -732,7 +704,6 @@ namespace CogDrawTool
                         compositeShape.Interactive = true;
                         compositeShape.GraphicDOFEnable = CogCompositeShapeDOFConstants.Position;
                         compositeShape.LineWidthInScreenPixels = (int)UpDownLineWidth.Value;
-                        compositeShape.TipText = string.Format("Defect No: {0}", shapeContainer.Count);
                         compositeShape.ID = 100;   //Just a random number for now
 
                         for (int i = 0; i < multiToolPositions.Count; i++)
@@ -756,6 +727,7 @@ namespace CogDrawTool
                                 //Line
                                 CogLineSegment cogLineSegment = new CogLineSegment();
                                 cogLineSegment.SelectedSpaceName = "$";
+                                cogLineSegment.TipText = string.Format("Defect No: {0}", shapeContainer.Count);
                                 cogLineSegment.Interactive = false;
                                 cogLineSegment.GraphicDOFEnable = CogLineSegmentDOFConstants.None;
                                 cogLineSegment.SetStartEnd(multiToolPositions[i].Item1,
@@ -799,17 +771,16 @@ namespace CogDrawTool
                     }
                     //Decrement for Angle steps
                     multiToolSteps -= 1;
+                    if (0 < multiToolSteps)
+                    {
+                        multiToolPositions.Add(new Tuple<double, double>(mappedX, mappedY));
+                    }
                 }
                 else if (RBtnSingleRadius.Checked)
                 {
                     if (1 < multiToolSteps)
                     {
-                        //For temporary display
-                        CogLineSegment line = new CogLineSegment();
-                        line.SetStartLengthRotation(mappedX, mappedY, 0.001, 0);
-                        line.LineWidthInScreenPixels = (int)UpDownLineWidth.Value * 2;
-                        cogDisplay1.InteractiveGraphics.Add(line, "temp", false);
-
+                        AddTemporaryPoint(mappedX, mappedY);
                         multiToolPositions.Add(new Tuple<double, double>(mappedX, mappedY));
                     }
                     else if (1 == multiToolSteps)
@@ -830,6 +801,7 @@ namespace CogDrawTool
                         //Dot in the middle of the circle
                         CogPointMarker point = new CogPointMarker();
                         point.SelectedSpaceName = "$";
+                        point.Color = CogColorConstants.Red;
                         point.SetCenterRotationSize(multiToolPositions[0].Item1,
                             multiToolPositions[0].Item2, 0, (int)UpDownLineWidth.Value * 2);
                         //Circle
@@ -858,10 +830,267 @@ namespace CogDrawTool
                 {
                     if (4 == multiToolSteps)
                     {
+                        AddTemporaryPoint(mappedX, mappedY);
+                    }
+                    else if (3 == multiToolSteps)
+                    {
+                        AddTemporaryLine(multiToolPositions[0].Item1, 
+                            multiToolPositions[0].Item2, mappedX, mappedY);
+                    }
+                    else if (2 == multiToolSteps)
+                    {
+                        AddTemporaryPoint(mappedX, mappedY);
+                    }
+                    else if (1 == multiToolSteps)
+                    {
+                        //Add the positions first so everything can be done inside a loop
+                        multiToolPositions.Add(new Tuple<double, double>(mappedX, mappedY));
 
+                        CogCompositeShape compositeShape = new CogCompositeShape();
+                        compositeShape.CompositionMode = CogCompositeShapeCompositionModeConstants.Freeform;
+                        compositeShape.Interactive = true;
+                        compositeShape.GraphicDOFEnable = CogCompositeShapeDOFConstants.Position;
+                        compositeShape.LineWidthInScreenPixels = (int)UpDownLineWidth.Value;
+                        compositeShape.TipText = string.Format("Defect No: {0}", shapeContainer.Count);
+                        compositeShape.ID = 100;   //Just a random number for now
+
+                        //Line
+                        for (int i = 0; i < 4; i += 2)
+                        {
+                            CogLineSegment cogLineSegment = new CogLineSegment();
+                            cogLineSegment.SelectedSpaceName = "$";
+                            cogLineSegment.Interactive = true;
+                            cogLineSegment.GraphicDOFEnable = CogLineSegmentDOFConstants.BothPoints;
+                            cogLineSegment.SetStartEnd(multiToolPositions[i].Item1,
+                                multiToolPositions[i].Item2, multiToolPositions[i + 1].Item1,
+                                multiToolPositions[i + 1].Item2);
+                            compositeShape.Shapes.Add(cogLineSegment);
+                        }
+
+                        //Compute the angle
+                        double angle = 0;
+                        CogLineSegment line1 = (CogLineSegment)compositeShape.Shapes[0];
+                        CogLineSegment line2 = (CogLineSegment)compositeShape.Shapes[1];
+                        double s1 = (line1.StartY - line1.EndY) / (line1.EndX - line1.StartX);
+                        double s2 = (line2.StartY - line2.EndY) / (line2.EndX - line2.StartX);
+                        double c1 = line1.StartY - (s1 * line1.StartX);
+                        double c2 = line2.StartY - (s2 * line2.StartX);
+                        angle = Math.Abs((1 + (s1 * s2)) /
+                            (Math.Sqrt(1 + Math.Pow(s1, 2)) * Math.Sqrt(1 + Math.Pow(s2, 2))));
+                        angle = Math.Acos(angle) * 180 / Math.PI;
+
+                        shapeContainer.Add(compositeShape);
+                        cogDisplay1.InteractiveGraphics.Add(compositeShape, "Angle 1", false);
+                        // Populate defect table
+                        string detail = string.Format("Angle: {0}", angle);
+                        defectTable.Rows.Add(defectTable.Rows.Count, defectCategory, detail);
+
+                        RBtnNone.Checked = true;
+                    }
+                    multiToolSteps -= 1;
+                    if (0 < multiToolSteps)
+                    {
+                        multiToolPositions.Add(new Tuple<double, double>(mappedX, mappedY));
+                    }
+                }
+                else if (RBtnPerpLength.Checked)
+                {
+                    if (3 == multiToolSteps)
+                    {
+                        AddTemporaryPoint(mappedX, mappedY);
+                    }
+                    else if (2 == multiToolSteps)
+                    {
+                        AddTemporaryLine(multiToolPositions[0].Item1,
+                            multiToolPositions[0].Item2, mappedX, mappedY);
+                    }
+                    else if (1 == multiToolSteps)
+                    {
+                        CogCompositeShape compositeShape = new CogCompositeShape();
+                        compositeShape.CompositionMode = CogCompositeShapeCompositionModeConstants.Freeform;
+                        compositeShape.Interactive = true;
+                        compositeShape.GraphicDOFEnable = CogCompositeShapeDOFConstants.Position | CogCompositeShapeDOFConstants.Rotation;
+                        compositeShape.LineWidthInScreenPixels = (int)UpDownLineWidth.Value;
+                        compositeShape.TipText = string.Format("Defect No: {0}", shapeContainer.Count);
+                        compositeShape.ID = 100;   //Just a random number for now
+
+                        //Line
+                        CogLineSegment cogLineSegment = new CogLineSegment();
+                        cogLineSegment.SelectedSpaceName = "$";
+                        cogLineSegment.Interactive = true;
+                        cogLineSegment.GraphicDOFEnable = CogLineSegmentDOFConstants.None;
+                        //cogLineSegment.Changed += PerpLengthLine_Changed;
+                        cogLineSegment.SetStartEnd(multiToolPositions[0].Item1,
+                            multiToolPositions[0].Item2, multiToolPositions[1].Item1,
+                            multiToolPositions[1].Item2);
+                        compositeShape.Shapes.Add(cogLineSegment);
+
+                        //Find the perpendicular gradient of the line above
+                        CogLineSegment line1 = (CogLineSegment)compositeShape.Shapes[0];
+                        double m1 = (line1.EndY - line1.StartY) / (line1.EndX - line1.StartX);
+                        double m2 = -1 / m1;
+                        double c1 = line1.StartY - (m1 * line1.StartX);
+                        double c2 = mappedY - (m2 * mappedX);
+                        //Get the intersect of 2 lines
+                        double intersectX = (c2 - c1) / (m1 - m2);
+                        double intersectY = (m1 * intersectX) + c1;
+                        /*Console.WriteLine(m1);
+                        Console.WriteLine(m2);
+                        Console.WriteLine(c1);
+                        Console.WriteLine(c2);
+                        Console.WriteLine(intersectX);
+                        Console.WriteLine(intersectY);*/
+
+                        //Perpendicular Line that stops on the intersection 
+                        CogLineSegment perpLine = new CogLineSegment();
+                        perpLine.SelectedSpaceName = "$";
+                        perpLine.Interactive = true;
+                        perpLine.GraphicDOFEnable = CogLineSegmentDOFConstants.None;
+                        perpLine.Color = CogColorConstants.Red;
+                        perpLine.SetStartEnd(mappedX, mappedY, intersectX, intersectY);
+                        compositeShape.Shapes.Add(perpLine);
+
+                        shapeContainer.Add(compositeShape);
+                        cogDisplay1.InteractiveGraphics.Add(compositeShape, "Angle 1", false);
+                        // Populate defect table
+                        string detail = string.Format("Length: {0}", perpLine.Length);
+                        defectTable.Rows.Add(defectTable.Rows.Count, defectCategory, detail);
+
+                        RBtnNone.Checked = true;
+                    }
+                    multiToolSteps -= 1;
+                    if (0 < multiToolSteps)
+                    {
+                        multiToolPositions.Add(new Tuple<double, double>(mappedX, mappedY));
+                    }
+                }
+                else if (RBtn2CircleLength.Checked)
+                {
+                    if (4 == multiToolSteps)
+                    {
+                        AddTemporaryPoint(mappedX, mappedY);
+                    }
+                    else if (3 == multiToolSteps)
+                    {
+                        //Calculate the radius
+                        double diffX = multiToolPositions[0].Item1 - mappedX;
+                        double diffY = multiToolPositions[0].Item2 - mappedY;
+                        double radius = Math.Sqrt(Math.Pow(diffX, 2) + Math.Pow(diffY, 2));
+                        AddTemporaryCircle(multiToolPositions[0].Item1, multiToolPositions[0].Item2, radius);
+                    }
+                    else if (2 == multiToolSteps)
+                    {
+                        AddTemporaryPoint(mappedX, mappedY);
+                    }
+                    else if (1 == multiToolSteps)
+                    {
+                        multiToolPositions.Add(new Tuple<double, double>(mappedX, mappedY));
+
+                        CogCompositeShape compositeShape = new CogCompositeShape();
+                        compositeShape.CompositionMode = CogCompositeShapeCompositionModeConstants.Freeform;
+                        compositeShape.Interactive = true;
+                        compositeShape.GraphicDOFEnable = CogCompositeShapeDOFConstants.Position;
+                        compositeShape.LineWidthInScreenPixels = 50;
+                        compositeShape.TipText = string.Format("Defect No: {0}", shapeContainer.Count);
+                        compositeShape.ID = 100;   //Just a random number for now
+
+                        //Dot1
+                        CogLineSegment dot1 = new CogLineSegment();
+                        dot1.SelectedSpaceName = "$";
+                        dot1.Interactive = true;
+                        dot1.GraphicDOFEnable = CogLineSegmentDOFConstants.Position;
+                        dot1.LineWidthInScreenPixels = 5;
+                        dot1.DragLineWidthInScreenPixels = 5;
+                        dot1.SelectedLineWidthInScreenPixels = 5;
+                        dot1.Color = CogColorConstants.Red;
+                        dot1.Changed += TwoCircleLength_Changed;
+                        dot1.SetStartLengthRotation(multiToolPositions[0].Item1,
+                        multiToolPositions[0].Item2, 0.001, 0);
+                        compositeShape.Shapes.Add(dot1);
+                        //Circle1
+                        //Calculate the radius
+                        double diffX = multiToolPositions[0].Item1 - multiToolPositions[1].Item1;
+                        double diffY = multiToolPositions[0].Item2 - multiToolPositions[1].Item2;
+                        double radius = Math.Sqrt(Math.Pow(diffX, 2) + Math.Pow(diffY, 2));
+                        CogCircle circle1 = new CogCircle();
+                        circle1.SelectedSpaceName = "$";
+                        circle1.SetCenterRadius(multiToolPositions[0].Item1, multiToolPositions[0].Item2, radius);
+                        circle1.GraphicDOFEnable = CogCircleDOFConstants.Radius;
+                        circle1.Interactive = true;
+                        compositeShape.Shapes.Add(circle1);
+                        //Dot2
+                        CogLineSegment dot2 = new CogLineSegment();
+                        dot2.SelectedSpaceName = "$";
+                        dot2.Interactive = true;
+                        dot2.GraphicDOFEnable = CogLineSegmentDOFConstants.Position;
+                        dot2.LineWidthInScreenPixels = 5;
+                        dot2.DragLineWidthInScreenPixels = 5;
+                        dot2.SelectedLineWidthInScreenPixels = 5;
+                        dot2.Color = CogColorConstants.Red;
+                        dot2.Changed += TwoCircleLength_Changed;
+                        dot2.SetStartLengthRotation(multiToolPositions[2].Item1,
+                        multiToolPositions[2].Item2, 0.001, 0);
+                        compositeShape.Shapes.Add(dot2);
+                        //Circle2
+                        //Calculate the radius
+                        diffX = multiToolPositions[2].Item1 - multiToolPositions[3].Item1;
+                        diffY = multiToolPositions[2].Item2 - multiToolPositions[3].Item2;
+                        radius = Math.Sqrt(Math.Pow(diffX, 2) + Math.Pow(diffY, 2));
+                        CogCircle circle2 = new CogCircle();
+                        circle2.SelectedSpaceName = "$";
+                        circle2.SetCenterRadius(multiToolPositions[2].Item1, multiToolPositions[2].Item2, radius);
+                        circle2.GraphicDOFEnable = CogCircleDOFConstants.Radius;
+                        circle2.Interactive = true;
+                        compositeShape.Shapes.Add(circle2);
+                        //Line
+                        CogLineSegment line = new CogLineSegment();
+                        line.SelectedSpaceName = "$";
+                        line.GraphicDOFEnable = CogLineSegmentDOFConstants.None;
+                        line.SetStartEnd(multiToolPositions[0].Item1, multiToolPositions[0].Item2,
+                            multiToolPositions[2].Item1, multiToolPositions[2].Item2);
+                        compositeShape.Shapes.Add(line);
+
+                        shapeContainer.Add(compositeShape);
+                        cogDisplay1.InteractiveGraphics.Add(compositeShape, "2 Circle Length", false);
+                        // Populate defect table
+                        string detail = string.Format("Length: {0}", line.Length);
+                        defectTable.Rows.Add(defectTable.Rows.Count, defectCategory, detail);
+
+                        RBtnNone.Checked = true;
+                    }
+                    multiToolSteps -= 1;
+                    if (0 < multiToolSteps)
+                    {
+                        multiToolPositions.Add(new Tuple<double, double>(mappedX, mappedY));
                     }
                 }
             }
+        }
+
+        private void AddTemporaryLine(double startX, double startY, double endX, double endY)
+        {
+            //For temporary display
+            CogLineSegment line = new CogLineSegment();
+            line.SetStartEnd(startX, startY, endX, endY);
+            cogDisplay1.InteractiveGraphics.Add(line, "temp", false);
+        }
+
+        private void AddTemporaryPoint(double x, double y)
+        {
+            //For temporary display
+            CogLineSegment line = new CogLineSegment();
+            line.SetStartLengthRotation(x, y, 0.001, 0);
+            line.LineWidthInScreenPixels = (int)UpDownLineWidth.Value * 2;
+            cogDisplay1.InteractiveGraphics.Add(line, "temp", false);
+        }
+
+        private void AddTemporaryCircle(double centerX, double centerY, double radius)
+        {
+            //For temporary display
+            CogCircle circle = new CogCircle();
+            circle.SetCenterRadius(centerX, centerY, radius);
+            circle.LineWidthInScreenPixels = (int)UpDownLineWidth.Value;
+            cogDisplay1.InteractiveGraphics.Add(circle, "temp", false);
         }
 
         private void cogDisplay1_MouseMove(object sender, MouseEventArgs e)
@@ -978,7 +1207,7 @@ namespace CogDrawTool
                 CogCompositeShape compositeShape = new CogCompositeShape();
                 compositeShape.CompositionMode = CogCompositeShapeCompositionModeConstants.Freeform;
                 compositeShape.Interactive = true;
-                compositeShape.GraphicDOFEnable = CogCompositeShapeDOFConstants.Position;
+                compositeShape.GraphicDOFEnable = CogCompositeShapeDOFConstants.All;
                 compositeShape.LineWidthInScreenPixels = (int)UpDownLineWidth.Value;
                 compositeShape.TipText = string.Format("Defect No: {0}", shapeContainer.Count);
                 compositeShape.ID = 100;   //Just a random number for now
@@ -1030,7 +1259,7 @@ namespace CogDrawTool
         {
             if (!changing)
             {
-                //To prevent lines to invoke this method after
+                //To prevent lines to be invoked while
                 //the position is getting changed.
                 changing = true;
                 
@@ -1115,6 +1344,118 @@ namespace CogDrawTool
                 {
                     ((CogPointMarker)compositeShape.Shapes[0]).X = ((CogCircle)compositeShape.Shapes[1]).CenterX;
                     ((CogPointMarker)compositeShape.Shapes[0]).Y = ((CogCircle)compositeShape.Shapes[1]).CenterY;
+                }
+
+                changing = false;
+            }
+        }
+
+        private void TwoCircleLength_Changed(object sender, CogChangedEventArgs e)
+        {
+            CogCompositeShape compositeShape = new CogCompositeShape();
+            int index = -1;
+            CogCompositeShape temp;
+            for (int i = 0; i < cogDisplay1.InteractiveGraphics.Count; i++)
+            {
+                if (cogDisplay1.InteractiveGraphics[i].GetType() == typeof(CogCompositeShape))
+                {
+                    temp = (CogCompositeShape)cogDisplay1.InteractiveGraphics[i];
+                    for (int j = 0; j < temp.Shapes.Count; j++)
+                    {
+                        if (sender.Equals(temp.Shapes[j]))
+                        {
+                            compositeShape = (CogCompositeShape)cogDisplay1.InteractiveGraphics[i];
+                            index = j;
+                        }
+                    }
+
+                }
+            }
+
+            //Update the line position and circle position
+            if (1 < compositeShape.Shapes.Count)
+            {
+                if (0 == index)
+                {
+                    //Update first circle and line's start xy
+                    double x = ((CogLineSegment)compositeShape.Shapes[0]).StartX;
+                    double y = ((CogLineSegment)compositeShape.Shapes[0]).StartY;
+                    ((CogCircle)compositeShape.Shapes[1]).CenterX = x;
+                    ((CogCircle)compositeShape.Shapes[1]).CenterY = y;
+                    ((CogLineSegment)compositeShape.Shapes[4]).StartX = x;
+                    ((CogLineSegment)compositeShape.Shapes[4]).StartY = y;
+                }  
+                else if (2 == index)
+                {
+                    //Update second circle and line's end xy
+                    double x = ((CogLineSegment)compositeShape.Shapes[2]).StartX;
+                    double y = ((CogLineSegment)compositeShape.Shapes[2]).StartY;
+                    ((CogCircle)compositeShape.Shapes[3]).CenterX = x;
+                    ((CogCircle)compositeShape.Shapes[3]).CenterY = y;
+                    ((CogLineSegment)compositeShape.Shapes[4]).EndX = x;
+                    ((CogLineSegment)compositeShape.Shapes[4]).EndY = y;
+                }
+            }
+        }
+
+        private void PerpLengthLine_Changed(object sender, CogChangedEventArgs e)
+        {
+            if (!changing)
+            {
+                //To prevent lines to be invoked while
+                //the position is getting changed.
+                changing = true;
+
+                CogCompositeShape compositeShape = new CogCompositeShape();
+                int index = -1;
+                CogCompositeShape temp;
+                for (int i = 0; i < cogDisplay1.InteractiveGraphics.Count; i++)
+                {
+                    if (cogDisplay1.InteractiveGraphics[i].GetType() == typeof(CogCompositeShape))
+                    {
+                        temp = (CogCompositeShape)cogDisplay1.InteractiveGraphics[i];
+                        for (int j = 0; j < temp.Shapes.Count; j++)
+                        {
+                            if (sender.Equals(temp.Shapes[j]))
+                            {
+                                compositeShape = (CogCompositeShape)cogDisplay1.InteractiveGraphics[i];
+                                index = j;
+                            }
+                        }
+
+                    }
+                }
+
+                //Update the line position
+                if (1 < compositeShape.Shapes.Count)
+                {
+                    if (0 == index)
+                    {
+                        //Update the perpendicular line
+
+                        // Get the distance from start point of the normal line
+                        //to the intersection of the perpendicular line (Before it
+                        //was changed). 
+                        CogLineSegment line1 = (CogLineSegment)compositeShape.Shapes[0];
+                        CogLineSegment perpLine = (CogLineSegment)compositeShape.Shapes[1];
+                        double distance = Math.Sqrt(Math.Pow(perpLine.EndX - line1.StartX, 2) 
+                            + Math.Pow(perpLine.EndY - line1.StartY, 2));
+                        double m1 = (line1.EndY - line1.StartY) / (line1.EndX - line1.StartX);
+                        double m2 = -1 / m1;
+
+
+                        /*//Find the perpendicular gradient of the line above
+                        double c1 = line1.StartY - (m1 * line1.StartX);
+                        double c2 = mappedY - (m2 * mappedX);
+                        //Get the intersect of 2 lines
+                        double intersectX = (c2 - c1) / (m1 - m2);
+                        double intersectY = (m1 * intersectX) + c1;*/
+                    }
+                    else if (1 == index)
+                    {
+                        //Update the original line
+                    }
+                    
                 }
 
                 changing = false;
