@@ -35,6 +35,14 @@ namespace CogDrawTool
             this.cogDisplayStatusBarV21 = new Cognex.VisionPro.CogDisplayStatusBarV2();
             this.cogDisplayToolbarV21 = new Cognex.VisionPro.CogDisplayToolbarV2();
             this.toolStrip1 = new System.Windows.Forms.ToolStrip();
+            this.BtnLoad = new System.Windows.Forms.ToolStripButton();
+            this.BtnRect = new System.Windows.Forms.ToolStripButton();
+            this.BtnAnnotation = new System.Windows.Forms.ToolStripButton();
+            this.BtnPoint = new System.Windows.Forms.ToolStripButton();
+            this.BtnLine = new System.Windows.Forms.ToolStripButton();
+            this.btnArrow = new System.Windows.Forms.ToolStripButton();
+            this.btnDraw = new System.Windows.Forms.ToolStripButton();
+            this.btnDistance = new System.Windows.Forms.ToolStripButton();
             this.OpenImgDialog = new System.Windows.Forms.OpenFileDialog();
             this.SaveImageDialog = new System.Windows.Forms.SaveFileDialog();
             this.panel1 = new System.Windows.Forms.Panel();
@@ -67,28 +75,25 @@ namespace CogDrawTool
             this.RBtnMultiPointsLength = new System.Windows.Forms.RadioButton();
             this.RBtnNone = new System.Windows.Forms.RadioButton();
             this.RBtn2Points = new System.Windows.Forms.RadioButton();
-            this.BtnLoad = new System.Windows.Forms.ToolStripButton();
-            this.BtnRect = new System.Windows.Forms.ToolStripButton();
-            this.BtnAnnotation = new System.Windows.Forms.ToolStripButton();
-            this.BtnPoint = new System.Windows.Forms.ToolStripButton();
-            this.BtnLine = new System.Windows.Forms.ToolStripButton();
-            this.btnArrow = new System.Windows.Forms.ToolStripButton();
-            this.btnDraw = new System.Windows.Forms.ToolStripButton();
-            this.btnDistance = new System.Windows.Forms.ToolStripButton();
             this.groupBox3 = new System.Windows.Forms.GroupBox();
-            this.PBRed = new System.Windows.Forms.PictureBox();
-            this.pictureBox1 = new System.Windows.Forms.PictureBox();
-            this.pictureBox2 = new System.Windows.Forms.PictureBox();
-            this.pictureBox3 = new System.Windows.Forms.PictureBox();
-            this.pictureBox4 = new System.Windows.Forms.PictureBox();
-            this.pictureBox5 = new System.Windows.Forms.PictureBox();
-            this.pictureBox6 = new System.Windows.Forms.PictureBox();
-            this.pictureBox7 = new System.Windows.Forms.PictureBox();
-            this.pictureBox8 = new System.Windows.Forms.PictureBox();
-            this.RBtnLineColor = new System.Windows.Forms.RadioButton();
-            this.label2 = new System.Windows.Forms.Label();
-            this.label3 = new System.Windows.Forms.Label();
             this.RBtnDotColor = new System.Windows.Forms.RadioButton();
+            this.label3 = new System.Windows.Forms.Label();
+            this.label2 = new System.Windows.Forms.Label();
+            this.RBtnLineColor = new System.Windows.Forms.RadioButton();
+            this.pictureBox8 = new System.Windows.Forms.PictureBox();
+            this.pictureBox7 = new System.Windows.Forms.PictureBox();
+            this.pictureBox6 = new System.Windows.Forms.PictureBox();
+            this.pictureBox5 = new System.Windows.Forms.PictureBox();
+            this.pictureBox4 = new System.Windows.Forms.PictureBox();
+            this.pictureBox3 = new System.Windows.Forms.PictureBox();
+            this.pictureBox2 = new System.Windows.Forms.PictureBox();
+            this.pictureBox1 = new System.Windows.Forms.PictureBox();
+            this.PBRed = new System.Windows.Forms.PictureBox();
+            this.pictureBox9 = new System.Windows.Forms.PictureBox();
+            this.pictureBox10 = new System.Windows.Forms.PictureBox();
+            this.pictureBox11 = new System.Windows.Forms.PictureBox();
+            this.pictureBox12 = new System.Windows.Forms.PictureBox();
+            this.pictureBox13 = new System.Windows.Forms.PictureBox();
             ((System.ComponentModel.ISupportInitialize)(this.cogDisplay1)).BeginInit();
             this.toolStrip1.SuspendLayout();
             this.panel1.SuspendLayout();
@@ -100,15 +105,20 @@ namespace CogDrawTool
             ((System.ComponentModel.ISupportInitialize)(this.numericUpDownTest)).BeginInit();
             this.groupBox2.SuspendLayout();
             this.groupBox3.SuspendLayout();
-            ((System.ComponentModel.ISupportInitialize)(this.PBRed)).BeginInit();
-            ((System.ComponentModel.ISupportInitialize)(this.pictureBox1)).BeginInit();
-            ((System.ComponentModel.ISupportInitialize)(this.pictureBox2)).BeginInit();
-            ((System.ComponentModel.ISupportInitialize)(this.pictureBox3)).BeginInit();
-            ((System.ComponentModel.ISupportInitialize)(this.pictureBox4)).BeginInit();
-            ((System.ComponentModel.ISupportInitialize)(this.pictureBox5)).BeginInit();
-            ((System.ComponentModel.ISupportInitialize)(this.pictureBox6)).BeginInit();
-            ((System.ComponentModel.ISupportInitialize)(this.pictureBox7)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.pictureBox8)).BeginInit();
+            ((System.ComponentModel.ISupportInitialize)(this.pictureBox7)).BeginInit();
+            ((System.ComponentModel.ISupportInitialize)(this.pictureBox6)).BeginInit();
+            ((System.ComponentModel.ISupportInitialize)(this.pictureBox5)).BeginInit();
+            ((System.ComponentModel.ISupportInitialize)(this.pictureBox4)).BeginInit();
+            ((System.ComponentModel.ISupportInitialize)(this.pictureBox3)).BeginInit();
+            ((System.ComponentModel.ISupportInitialize)(this.pictureBox2)).BeginInit();
+            ((System.ComponentModel.ISupportInitialize)(this.pictureBox1)).BeginInit();
+            ((System.ComponentModel.ISupportInitialize)(this.PBRed)).BeginInit();
+            ((System.ComponentModel.ISupportInitialize)(this.pictureBox9)).BeginInit();
+            ((System.ComponentModel.ISupportInitialize)(this.pictureBox10)).BeginInit();
+            ((System.ComponentModel.ISupportInitialize)(this.pictureBox11)).BeginInit();
+            ((System.ComponentModel.ISupportInitialize)(this.pictureBox12)).BeginInit();
+            ((System.ComponentModel.ISupportInitialize)(this.pictureBox13)).BeginInit();
             this.SuspendLayout();
             // 
             // cogDisplay1
@@ -171,6 +181,79 @@ namespace CogDrawTool
             this.toolStrip1.Size = new System.Drawing.Size(87, 228);
             this.toolStrip1.TabIndex = 4;
             this.toolStrip1.Text = "toolStrip1";
+            // 
+            // BtnLoad
+            // 
+            this.BtnLoad.Image = ((System.Drawing.Image)(resources.GetObject("BtnLoad.Image")));
+            this.BtnLoad.ImageTransparentColor = System.Drawing.Color.Magenta;
+            this.BtnLoad.Name = "BtnLoad";
+            this.BtnLoad.Size = new System.Drawing.Size(85, 24);
+            this.BtnLoad.Text = "LOAD";
+            this.BtnLoad.Click += new System.EventHandler(this.BtnLoad_Click);
+            // 
+            // BtnRect
+            // 
+            this.BtnRect.Image = ((System.Drawing.Image)(resources.GetObject("BtnRect.Image")));
+            this.BtnRect.ImageTransparentColor = System.Drawing.Color.Magenta;
+            this.BtnRect.Name = "BtnRect";
+            this.BtnRect.Size = new System.Drawing.Size(85, 24);
+            this.BtnRect.Text = "RECT";
+            this.BtnRect.Click += new System.EventHandler(this.BtnRect_Click);
+            // 
+            // BtnAnnotation
+            // 
+            this.BtnAnnotation.Image = ((System.Drawing.Image)(resources.GetObject("BtnAnnotation.Image")));
+            this.BtnAnnotation.ImageTransparentColor = System.Drawing.Color.Magenta;
+            this.BtnAnnotation.Name = "BtnAnnotation";
+            this.BtnAnnotation.Size = new System.Drawing.Size(85, 24);
+            this.BtnAnnotation.Text = "TEXT";
+            this.BtnAnnotation.ToolTipText = "TEXT";
+            this.BtnAnnotation.Click += new System.EventHandler(this.BtnAnnotation_Click);
+            // 
+            // BtnPoint
+            // 
+            this.BtnPoint.Image = ((System.Drawing.Image)(resources.GetObject("BtnPoint.Image")));
+            this.BtnPoint.ImageTransparentColor = System.Drawing.Color.Magenta;
+            this.BtnPoint.Name = "BtnPoint";
+            this.BtnPoint.Size = new System.Drawing.Size(85, 24);
+            this.BtnPoint.Text = "POINT";
+            this.BtnPoint.Click += new System.EventHandler(this.BtnPoint_Click);
+            // 
+            // BtnLine
+            // 
+            this.BtnLine.Image = ((System.Drawing.Image)(resources.GetObject("BtnLine.Image")));
+            this.BtnLine.ImageTransparentColor = System.Drawing.Color.Magenta;
+            this.BtnLine.Name = "BtnLine";
+            this.BtnLine.Size = new System.Drawing.Size(85, 24);
+            this.BtnLine.Text = "LINE";
+            this.BtnLine.Click += new System.EventHandler(this.BtnLine_Click);
+            // 
+            // btnArrow
+            // 
+            this.btnArrow.Image = ((System.Drawing.Image)(resources.GetObject("btnArrow.Image")));
+            this.btnArrow.ImageTransparentColor = System.Drawing.Color.Magenta;
+            this.btnArrow.Name = "btnArrow";
+            this.btnArrow.Size = new System.Drawing.Size(85, 24);
+            this.btnArrow.Text = "ARROW";
+            this.btnArrow.Click += new System.EventHandler(this.btnArrow_Click);
+            // 
+            // btnDraw
+            // 
+            this.btnDraw.Image = ((System.Drawing.Image)(resources.GetObject("btnDraw.Image")));
+            this.btnDraw.ImageTransparentColor = System.Drawing.Color.Magenta;
+            this.btnDraw.Name = "btnDraw";
+            this.btnDraw.Size = new System.Drawing.Size(85, 24);
+            this.btnDraw.Text = "DRAW";
+            this.btnDraw.Click += new System.EventHandler(this.btnDraw_Click);
+            // 
+            // btnDistance
+            // 
+            this.btnDistance.Image = ((System.Drawing.Image)(resources.GetObject("btnDistance.Image")));
+            this.btnDistance.ImageTransparentColor = System.Drawing.Color.Magenta;
+            this.btnDistance.Name = "btnDistance";
+            this.btnDistance.Size = new System.Drawing.Size(85, 24);
+            this.btnDistance.Text = "DIST";
+            this.btnDistance.Click += new System.EventHandler(this.btnDistance_Click);
             // 
             // OpenImgDialog
             // 
@@ -415,9 +498,9 @@ namespace CogDrawTool
             this.groupBox2.Controls.Add(this.RBtnMultiPointsLength);
             this.groupBox2.Controls.Add(this.RBtnNone);
             this.groupBox2.Controls.Add(this.RBtn2Points);
-            this.groupBox2.Location = new System.Drawing.Point(0, 265);
+            this.groupBox2.Location = new System.Drawing.Point(0, 247);
             this.groupBox2.Name = "groupBox2";
-            this.groupBox2.Size = new System.Drawing.Size(96, 256);
+            this.groupBox2.Size = new System.Drawing.Size(96, 253);
             this.groupBox2.TabIndex = 22;
             this.groupBox2.TabStop = false;
             this.groupBox2.Text = "Tools";
@@ -546,236 +629,218 @@ namespace CogDrawTool
             this.RBtn2Points.UseVisualStyleBackColor = true;
             this.RBtn2Points.CheckedChanged += new System.EventHandler(this.MultiToolRBtn_CheckedChanged);
             // 
-            // BtnLoad
-            // 
-            this.BtnLoad.Image = ((System.Drawing.Image)(resources.GetObject("BtnLoad.Image")));
-            this.BtnLoad.ImageTransparentColor = System.Drawing.Color.Magenta;
-            this.BtnLoad.Name = "BtnLoad";
-            this.BtnLoad.Size = new System.Drawing.Size(85, 24);
-            this.BtnLoad.Text = "LOAD";
-            this.BtnLoad.Click += new System.EventHandler(this.BtnLoad_Click);
-            // 
-            // BtnRect
-            // 
-            this.BtnRect.Image = ((System.Drawing.Image)(resources.GetObject("BtnRect.Image")));
-            this.BtnRect.ImageTransparentColor = System.Drawing.Color.Magenta;
-            this.BtnRect.Name = "BtnRect";
-            this.BtnRect.Size = new System.Drawing.Size(85, 24);
-            this.BtnRect.Text = "RECT";
-            this.BtnRect.Click += new System.EventHandler(this.BtnRect_Click);
-            // 
-            // BtnAnnotation
-            // 
-            this.BtnAnnotation.Image = ((System.Drawing.Image)(resources.GetObject("BtnAnnotation.Image")));
-            this.BtnAnnotation.ImageTransparentColor = System.Drawing.Color.Magenta;
-            this.BtnAnnotation.Name = "BtnAnnotation";
-            this.BtnAnnotation.Size = new System.Drawing.Size(85, 24);
-            this.BtnAnnotation.Text = "TEXT";
-            this.BtnAnnotation.ToolTipText = "TEXT";
-            this.BtnAnnotation.Click += new System.EventHandler(this.BtnAnnotation_Click);
-            // 
-            // BtnPoint
-            // 
-            this.BtnPoint.Image = ((System.Drawing.Image)(resources.GetObject("BtnPoint.Image")));
-            this.BtnPoint.ImageTransparentColor = System.Drawing.Color.Magenta;
-            this.BtnPoint.Name = "BtnPoint";
-            this.BtnPoint.Size = new System.Drawing.Size(85, 24);
-            this.BtnPoint.Text = "POINT";
-            this.BtnPoint.Click += new System.EventHandler(this.BtnPoint_Click);
-            // 
-            // BtnLine
-            // 
-            this.BtnLine.Image = ((System.Drawing.Image)(resources.GetObject("BtnLine.Image")));
-            this.BtnLine.ImageTransparentColor = System.Drawing.Color.Magenta;
-            this.BtnLine.Name = "BtnLine";
-            this.BtnLine.Size = new System.Drawing.Size(85, 24);
-            this.BtnLine.Text = "LINE";
-            this.BtnLine.Click += new System.EventHandler(this.BtnLine_Click);
-            // 
-            // btnArrow
-            // 
-            this.btnArrow.Image = ((System.Drawing.Image)(resources.GetObject("btnArrow.Image")));
-            this.btnArrow.ImageTransparentColor = System.Drawing.Color.Magenta;
-            this.btnArrow.Name = "btnArrow";
-            this.btnArrow.Size = new System.Drawing.Size(85, 24);
-            this.btnArrow.Text = "ARROW";
-            this.btnArrow.Click += new System.EventHandler(this.btnArrow_Click);
-            // 
-            // btnDraw
-            // 
-            this.btnDraw.Image = ((System.Drawing.Image)(resources.GetObject("btnDraw.Image")));
-            this.btnDraw.ImageTransparentColor = System.Drawing.Color.Magenta;
-            this.btnDraw.Name = "btnDraw";
-            this.btnDraw.Size = new System.Drawing.Size(85, 24);
-            this.btnDraw.Text = "DRAW";
-            this.btnDraw.Click += new System.EventHandler(this.btnDraw_Click);
-            // 
-            // btnDistance
-            // 
-            this.btnDistance.Image = ((System.Drawing.Image)(resources.GetObject("btnDistance.Image")));
-            this.btnDistance.ImageTransparentColor = System.Drawing.Color.Magenta;
-            this.btnDistance.Name = "btnDistance";
-            this.btnDistance.Size = new System.Drawing.Size(85, 24);
-            this.btnDistance.Text = "DIST";
-            this.btnDistance.Click += new System.EventHandler(this.btnDistance_Click);
-            // 
             // groupBox3
             // 
+            this.groupBox3.Controls.Add(this.pictureBox13);
+            this.groupBox3.Controls.Add(this.pictureBox12);
             this.groupBox3.Controls.Add(this.RBtnDotColor);
+            this.groupBox3.Controls.Add(this.pictureBox10);
+            this.groupBox3.Controls.Add(this.pictureBox9);
             this.groupBox3.Controls.Add(this.label3);
+            this.groupBox3.Controls.Add(this.pictureBox11);
             this.groupBox3.Controls.Add(this.label2);
             this.groupBox3.Controls.Add(this.RBtnLineColor);
             this.groupBox3.Controls.Add(this.pictureBox8);
-            this.groupBox3.Controls.Add(this.pictureBox7);
-            this.groupBox3.Controls.Add(this.pictureBox6);
+            this.groupBox3.Controls.Add(this.pictureBox2);
+            this.groupBox3.Controls.Add(this.PBRed);
             this.groupBox3.Controls.Add(this.pictureBox5);
             this.groupBox3.Controls.Add(this.pictureBox4);
-            this.groupBox3.Controls.Add(this.pictureBox3);
-            this.groupBox3.Controls.Add(this.pictureBox2);
             this.groupBox3.Controls.Add(this.pictureBox1);
-            this.groupBox3.Controls.Add(this.PBRed);
-            this.groupBox3.Location = new System.Drawing.Point(0, 527);
+            this.groupBox3.Controls.Add(this.pictureBox6);
+            this.groupBox3.Controls.Add(this.pictureBox3);
+            this.groupBox3.Controls.Add(this.pictureBox7);
+            this.groupBox3.Location = new System.Drawing.Point(0, 506);
             this.groupBox3.Name = "groupBox3";
-            this.groupBox3.Size = new System.Drawing.Size(96, 197);
+            this.groupBox3.Size = new System.Drawing.Size(96, 260);
             this.groupBox3.TabIndex = 23;
             this.groupBox3.TabStop = false;
             this.groupBox3.Text = "Colors";
-            // 
-            // PBRed
-            // 
-            this.PBRed.BackColor = System.Drawing.Color.Red;
-            this.PBRed.Location = new System.Drawing.Point(6, 103);
-            this.PBRed.Name = "PBRed";
-            this.PBRed.Size = new System.Drawing.Size(25, 25);
-            this.PBRed.TabIndex = 0;
-            this.PBRed.TabStop = false;
-            this.PBRed.Click += new System.EventHandler(this.PBColor_Click);
-            // 
-            // pictureBox1
-            // 
-            this.pictureBox1.BackColor = System.Drawing.Color.Yellow;
-            this.pictureBox1.Location = new System.Drawing.Point(37, 103);
-            this.pictureBox1.Name = "pictureBox1";
-            this.pictureBox1.Size = new System.Drawing.Size(25, 25);
-            this.pictureBox1.TabIndex = 1;
-            this.pictureBox1.TabStop = false;
-            this.pictureBox1.Click += new System.EventHandler(this.PBColor_Click);
-            // 
-            // pictureBox2
-            // 
-            this.pictureBox2.BackColor = System.Drawing.Color.Magenta;
-            this.pictureBox2.Location = new System.Drawing.Point(68, 103);
-            this.pictureBox2.Name = "pictureBox2";
-            this.pictureBox2.Size = new System.Drawing.Size(25, 25);
-            this.pictureBox2.TabIndex = 2;
-            this.pictureBox2.TabStop = false;
-            this.pictureBox2.Click += new System.EventHandler(this.PBColor_Click);
-            // 
-            // pictureBox3
-            // 
-            this.pictureBox3.BackColor = System.Drawing.Color.Blue;
-            this.pictureBox3.Location = new System.Drawing.Point(6, 134);
-            this.pictureBox3.Name = "pictureBox3";
-            this.pictureBox3.Size = new System.Drawing.Size(25, 25);
-            this.pictureBox3.TabIndex = 3;
-            this.pictureBox3.TabStop = false;
-            this.pictureBox3.Click += new System.EventHandler(this.PBColor_Click);
-            // 
-            // pictureBox4
-            // 
-            this.pictureBox4.BackColor = System.Drawing.Color.White;
-            this.pictureBox4.Location = new System.Drawing.Point(37, 134);
-            this.pictureBox4.Name = "pictureBox4";
-            this.pictureBox4.Size = new System.Drawing.Size(25, 25);
-            this.pictureBox4.TabIndex = 4;
-            this.pictureBox4.TabStop = false;
-            this.pictureBox4.Click += new System.EventHandler(this.PBColor_Click);
-            // 
-            // pictureBox5
-            // 
-            this.pictureBox5.BackColor = System.Drawing.Color.Black;
-            this.pictureBox5.Location = new System.Drawing.Point(68, 134);
-            this.pictureBox5.Name = "pictureBox5";
-            this.pictureBox5.Size = new System.Drawing.Size(25, 25);
-            this.pictureBox5.TabIndex = 5;
-            this.pictureBox5.TabStop = false;
-            this.pictureBox5.Click += new System.EventHandler(this.PBColor_Click);
-            // 
-            // pictureBox6
-            // 
-            this.pictureBox6.BackColor = System.Drawing.Color.Cyan;
-            this.pictureBox6.Location = new System.Drawing.Point(6, 165);
-            this.pictureBox6.Name = "pictureBox6";
-            this.pictureBox6.Size = new System.Drawing.Size(25, 25);
-            this.pictureBox6.TabIndex = 6;
-            this.pictureBox6.TabStop = false;
-            this.pictureBox6.Click += new System.EventHandler(this.PBColor_Click);
-            // 
-            // pictureBox7
-            // 
-            this.pictureBox7.BackColor = System.Drawing.Color.Green;
-            this.pictureBox7.Location = new System.Drawing.Point(37, 165);
-            this.pictureBox7.Name = "pictureBox7";
-            this.pictureBox7.Size = new System.Drawing.Size(25, 25);
-            this.pictureBox7.TabIndex = 7;
-            this.pictureBox7.TabStop = false;
-            this.pictureBox7.Click += new System.EventHandler(this.PBColor_Click);
-            // 
-            // pictureBox8
-            // 
-            this.pictureBox8.BackColor = System.Drawing.Color.Orange;
-            this.pictureBox8.Location = new System.Drawing.Point(67, 165);
-            this.pictureBox8.Name = "pictureBox8";
-            this.pictureBox8.Size = new System.Drawing.Size(25, 25);
-            this.pictureBox8.TabIndex = 8;
-            this.pictureBox8.TabStop = false;
-            this.pictureBox8.Click += new System.EventHandler(this.PBColor_Click);
-            // 
-            // RBtnLineColor
-            // 
-            this.RBtnLineColor.Appearance = System.Windows.Forms.Appearance.Button;
-            this.RBtnLineColor.BackColor = System.Drawing.Color.Blue;
-            this.RBtnLineColor.Location = new System.Drawing.Point(55, 18);
-            this.RBtnLineColor.Name = "RBtnLineColor";
-            this.RBtnLineColor.Size = new System.Drawing.Size(35, 35);
-            this.RBtnLineColor.TabIndex = 9;
-            this.RBtnLineColor.TabStop = true;
-            this.RBtnLineColor.UseVisualStyleBackColor = false;
-            // 
-            // label2
-            // 
-            this.label2.AutoSize = true;
-            this.label2.Location = new System.Drawing.Point(12, 27);
-            this.label2.Name = "label2";
-            this.label2.Size = new System.Drawing.Size(35, 16);
-            this.label2.TabIndex = 10;
-            this.label2.Text = "Line:";
-            // 
-            // label3
-            // 
-            this.label3.AutoSize = true;
-            this.label3.Location = new System.Drawing.Point(12, 68);
-            this.label3.Name = "label3";
-            this.label3.Size = new System.Drawing.Size(31, 16);
-            this.label3.TabIndex = 11;
-            this.label3.Text = "Dot:";
             // 
             // RBtnDotColor
             // 
             this.RBtnDotColor.Appearance = System.Windows.Forms.Appearance.Button;
             this.RBtnDotColor.BackColor = System.Drawing.Color.Red;
-            this.RBtnDotColor.Location = new System.Drawing.Point(55, 59);
+            this.RBtnDotColor.Location = new System.Drawing.Point(55, 54);
             this.RBtnDotColor.Name = "RBtnDotColor";
             this.RBtnDotColor.Size = new System.Drawing.Size(35, 35);
             this.RBtnDotColor.TabIndex = 12;
             this.RBtnDotColor.TabStop = true;
             this.RBtnDotColor.UseVisualStyleBackColor = false;
             // 
+            // label3
+            // 
+            this.label3.AutoSize = true;
+            this.label3.Location = new System.Drawing.Point(12, 63);
+            this.label3.Name = "label3";
+            this.label3.Size = new System.Drawing.Size(31, 16);
+            this.label3.TabIndex = 11;
+            this.label3.Text = "Dot:";
+            // 
+            // label2
+            // 
+            this.label2.AutoSize = true;
+            this.label2.Location = new System.Drawing.Point(12, 22);
+            this.label2.Name = "label2";
+            this.label2.Size = new System.Drawing.Size(35, 16);
+            this.label2.TabIndex = 10;
+            this.label2.Text = "Line:";
+            // 
+            // RBtnLineColor
+            // 
+            this.RBtnLineColor.Appearance = System.Windows.Forms.Appearance.Button;
+            this.RBtnLineColor.BackColor = System.Drawing.Color.Blue;
+            this.RBtnLineColor.Location = new System.Drawing.Point(55, 13);
+            this.RBtnLineColor.Name = "RBtnLineColor";
+            this.RBtnLineColor.Size = new System.Drawing.Size(35, 35);
+            this.RBtnLineColor.TabIndex = 9;
+            this.RBtnLineColor.TabStop = true;
+            this.RBtnLineColor.UseVisualStyleBackColor = false;
+            // 
+            // pictureBox8
+            // 
+            this.pictureBox8.BackColor = System.Drawing.Color.Orange;
+            this.pictureBox8.Location = new System.Drawing.Point(37, 98);
+            this.pictureBox8.Name = "pictureBox8";
+            this.pictureBox8.Size = new System.Drawing.Size(25, 25);
+            this.pictureBox8.TabIndex = 8;
+            this.pictureBox8.TabStop = false;
+            this.pictureBox8.Click += new System.EventHandler(this.PBColor_Click);
+            // 
+            // pictureBox7
+            // 
+            this.pictureBox7.BackColor = System.Drawing.Color.Green;
+            this.pictureBox7.Location = new System.Drawing.Point(6, 191);
+            this.pictureBox7.Name = "pictureBox7";
+            this.pictureBox7.Size = new System.Drawing.Size(25, 25);
+            this.pictureBox7.TabIndex = 7;
+            this.pictureBox7.TabStop = false;
+            this.pictureBox7.Click += new System.EventHandler(this.PBColor_Click);
+            // 
+            // pictureBox6
+            // 
+            this.pictureBox6.BackColor = System.Drawing.Color.Cyan;
+            this.pictureBox6.Location = new System.Drawing.Point(68, 160);
+            this.pictureBox6.Name = "pictureBox6";
+            this.pictureBox6.Size = new System.Drawing.Size(25, 25);
+            this.pictureBox6.TabIndex = 6;
+            this.pictureBox6.TabStop = false;
+            this.pictureBox6.Click += new System.EventHandler(this.PBColor_Click);
+            // 
+            // pictureBox5
+            // 
+            this.pictureBox5.BackColor = System.Drawing.Color.Black;
+            this.pictureBox5.Location = new System.Drawing.Point(37, 222);
+            this.pictureBox5.Name = "pictureBox5";
+            this.pictureBox5.Size = new System.Drawing.Size(25, 25);
+            this.pictureBox5.TabIndex = 5;
+            this.pictureBox5.TabStop = false;
+            this.pictureBox5.Click += new System.EventHandler(this.PBColor_Click);
+            // 
+            // pictureBox4
+            // 
+            this.pictureBox4.BackColor = System.Drawing.Color.White;
+            this.pictureBox4.Location = new System.Drawing.Point(6, 98);
+            this.pictureBox4.Name = "pictureBox4";
+            this.pictureBox4.Size = new System.Drawing.Size(25, 25);
+            this.pictureBox4.TabIndex = 4;
+            this.pictureBox4.TabStop = false;
+            this.pictureBox4.Click += new System.EventHandler(this.PBColor_Click);
+            // 
+            // pictureBox3
+            // 
+            this.pictureBox3.BackColor = System.Drawing.Color.Blue;
+            this.pictureBox3.Location = new System.Drawing.Point(37, 160);
+            this.pictureBox3.Name = "pictureBox3";
+            this.pictureBox3.Size = new System.Drawing.Size(25, 25);
+            this.pictureBox3.TabIndex = 3;
+            this.pictureBox3.TabStop = false;
+            this.pictureBox3.Click += new System.EventHandler(this.PBColor_Click);
+            // 
+            // pictureBox2
+            // 
+            this.pictureBox2.BackColor = System.Drawing.Color.Magenta;
+            this.pictureBox2.Location = new System.Drawing.Point(37, 129);
+            this.pictureBox2.Name = "pictureBox2";
+            this.pictureBox2.Size = new System.Drawing.Size(25, 25);
+            this.pictureBox2.TabIndex = 2;
+            this.pictureBox2.TabStop = false;
+            this.pictureBox2.Click += new System.EventHandler(this.PBColor_Click);
+            // 
+            // pictureBox1
+            // 
+            this.pictureBox1.BackColor = System.Drawing.Color.Yellow;
+            this.pictureBox1.Location = new System.Drawing.Point(68, 98);
+            this.pictureBox1.Name = "pictureBox1";
+            this.pictureBox1.Size = new System.Drawing.Size(25, 25);
+            this.pictureBox1.TabIndex = 1;
+            this.pictureBox1.TabStop = false;
+            this.pictureBox1.Click += new System.EventHandler(this.PBColor_Click);
+            // 
+            // PBRed
+            // 
+            this.PBRed.BackColor = System.Drawing.Color.Red;
+            this.PBRed.Location = new System.Drawing.Point(6, 129);
+            this.PBRed.Name = "PBRed";
+            this.PBRed.Size = new System.Drawing.Size(25, 25);
+            this.PBRed.TabIndex = 0;
+            this.PBRed.TabStop = false;
+            this.PBRed.Click += new System.EventHandler(this.PBColor_Click);
+            // 
+            // pictureBox9
+            // 
+            this.pictureBox9.BackColor = System.Drawing.Color.DarkGray;
+            this.pictureBox9.Location = new System.Drawing.Point(6, 222);
+            this.pictureBox9.Name = "pictureBox9";
+            this.pictureBox9.Size = new System.Drawing.Size(25, 25);
+            this.pictureBox9.TabIndex = 13;
+            this.pictureBox9.TabStop = false;
+            this.pictureBox9.Click += new System.EventHandler(this.PBColor_Click);
+            // 
+            // pictureBox10
+            // 
+            this.pictureBox10.BackColor = System.Drawing.Color.LightGray;
+            this.pictureBox10.Location = new System.Drawing.Point(67, 191);
+            this.pictureBox10.Name = "pictureBox10";
+            this.pictureBox10.Size = new System.Drawing.Size(25, 25);
+            this.pictureBox10.TabIndex = 14;
+            this.pictureBox10.TabStop = false;
+            this.pictureBox10.Click += new System.EventHandler(this.PBColor_Click);
+            // 
+            // pictureBox11
+            // 
+            this.pictureBox11.BackColor = System.Drawing.Color.DarkRed;
+            this.pictureBox11.Location = new System.Drawing.Point(6, 160);
+            this.pictureBox11.Name = "pictureBox11";
+            this.pictureBox11.Size = new System.Drawing.Size(25, 25);
+            this.pictureBox11.TabIndex = 15;
+            this.pictureBox11.TabStop = false;
+            this.pictureBox11.Click += new System.EventHandler(this.PBColor_Click);
+            // 
+            // pictureBox12
+            // 
+            this.pictureBox12.BackColor = System.Drawing.Color.DarkGreen;
+            this.pictureBox12.Location = new System.Drawing.Point(37, 191);
+            this.pictureBox12.Name = "pictureBox12";
+            this.pictureBox12.Size = new System.Drawing.Size(25, 25);
+            this.pictureBox12.TabIndex = 24;
+            this.pictureBox12.TabStop = false;
+            this.pictureBox12.Click += new System.EventHandler(this.PBColor_Click);
+            // 
+            // pictureBox13
+            // 
+            this.pictureBox13.BackColor = System.Drawing.Color.Purple;
+            this.pictureBox13.Location = new System.Drawing.Point(67, 129);
+            this.pictureBox13.Name = "pictureBox13";
+            this.pictureBox13.Size = new System.Drawing.Size(25, 25);
+            this.pictureBox13.TabIndex = 25;
+            this.pictureBox13.TabStop = false;
+            this.pictureBox13.Click += new System.EventHandler(this.PBColor_Click);
+            // 
             // DrawToolFrm
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(8F, 16F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-            this.ClientSize = new System.Drawing.Size(1791, 736);
+            this.ClientSize = new System.Drawing.Size(1791, 769);
             this.Controls.Add(this.groupBox3);
             this.Controls.Add(this.groupBox2);
             this.Controls.Add(this.btnClear);
@@ -810,15 +875,20 @@ namespace CogDrawTool
             this.groupBox2.ResumeLayout(false);
             this.groupBox3.ResumeLayout(false);
             this.groupBox3.PerformLayout();
-            ((System.ComponentModel.ISupportInitialize)(this.PBRed)).EndInit();
-            ((System.ComponentModel.ISupportInitialize)(this.pictureBox1)).EndInit();
-            ((System.ComponentModel.ISupportInitialize)(this.pictureBox2)).EndInit();
-            ((System.ComponentModel.ISupportInitialize)(this.pictureBox3)).EndInit();
-            ((System.ComponentModel.ISupportInitialize)(this.pictureBox4)).EndInit();
-            ((System.ComponentModel.ISupportInitialize)(this.pictureBox5)).EndInit();
-            ((System.ComponentModel.ISupportInitialize)(this.pictureBox6)).EndInit();
-            ((System.ComponentModel.ISupportInitialize)(this.pictureBox7)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.pictureBox8)).EndInit();
+            ((System.ComponentModel.ISupportInitialize)(this.pictureBox7)).EndInit();
+            ((System.ComponentModel.ISupportInitialize)(this.pictureBox6)).EndInit();
+            ((System.ComponentModel.ISupportInitialize)(this.pictureBox5)).EndInit();
+            ((System.ComponentModel.ISupportInitialize)(this.pictureBox4)).EndInit();
+            ((System.ComponentModel.ISupportInitialize)(this.pictureBox3)).EndInit();
+            ((System.ComponentModel.ISupportInitialize)(this.pictureBox2)).EndInit();
+            ((System.ComponentModel.ISupportInitialize)(this.pictureBox1)).EndInit();
+            ((System.ComponentModel.ISupportInitialize)(this.PBRed)).EndInit();
+            ((System.ComponentModel.ISupportInitialize)(this.pictureBox9)).EndInit();
+            ((System.ComponentModel.ISupportInitialize)(this.pictureBox10)).EndInit();
+            ((System.ComponentModel.ISupportInitialize)(this.pictureBox11)).EndInit();
+            ((System.ComponentModel.ISupportInitialize)(this.pictureBox12)).EndInit();
+            ((System.ComponentModel.ISupportInitialize)(this.pictureBox13)).EndInit();
             this.ResumeLayout(false);
             this.PerformLayout();
 
@@ -883,6 +953,11 @@ namespace CogDrawTool
         private System.Windows.Forms.Label label2;
         private System.Windows.Forms.RadioButton RBtnDotColor;
         private System.Windows.Forms.Label label3;
+        private System.Windows.Forms.PictureBox pictureBox13;
+        private System.Windows.Forms.PictureBox pictureBox12;
+        private System.Windows.Forms.PictureBox pictureBox11;
+        private System.Windows.Forms.PictureBox pictureBox10;
+        private System.Windows.Forms.PictureBox pictureBox9;
     }
 }
 
