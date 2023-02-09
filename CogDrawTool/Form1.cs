@@ -28,6 +28,7 @@ using QWhale.Common;
 using System.Windows.Media.Animation;
 using AForge.Math.Geometry;
 using AForge;
+using Microsoft.WindowsAPICodePack.Dialogs;
 
 namespace CogDrawTool
 {
@@ -52,6 +53,8 @@ namespace CogDrawTool
         private int lineWidth;
         private CogColorConstants lineColor;
         private CogColorConstants dotColor;
+        //Stores save path
+        CommonOpenFileDialog SaveFile = new CommonOpenFileDialog();
 
         //CompositeShape id - 5, 6, 7, 8, 9, 10
 
@@ -173,6 +176,15 @@ namespace CogDrawTool
             //Line and dot Color
             lineColor = CogColorConstants.Blue;
             dotColor = CogColorConstants.Red;
+
+            //Set the default path
+            string workingDirectory = Environment.CurrentDirectory;
+            string path = Directory.GetParent(workingDirectory).Parent.FullName;
+            path = Path.Combine(path, "Saved Files");
+            SaveFile.InitialDirectory = path;
+            SaveFile.IsFolderPicker = true;
+            //Set the initial file name
+            TBFileName.Text = "Temporary Name";
 
             //Create new DataTable
             CreateDefectListTable();
@@ -577,23 +589,27 @@ namespace CogDrawTool
         {
             //Convert InteractiveGraphics to CogCompositeShape
             CogCompositeShape container = new CogCompositeShape();
-            //Allows each shape to store their properties (Like interactive, DOF...etc)
+            //Allows each shape to maintain their properties (Like interactive, DOF...etc)
             container.CompositionMode = CogCompositeShapeCompositionModeConstants.Freeform;
             
-            //Add each shape into CompositeShape
+            //Add each shapes into CompositeShape
             for (int i = 0; i < shapeContainer.Count; i++)
             {
                 container.Shapes.Add(shapeContainer[i]);
             }
-          
+            
             if (container.Shapes.Count > 0)
             {
                 //Export vpp
-                CogSerializer.SaveObjectToFile(container,
-                    Path.Combine(_path, "Serialize.vpp"));
+                CogSerializer.SaveObjectToFile(container, Path.Combine(SaveFile.InitialDirectory, TBFileName.Text + ".vpp"));
+
+                //Export bmp
+                Bitmap displayBitmap = (Bitmap)cogDisplay1.CreateContentBitmap(
+                    CogDisplayContentBitmapConstants.Display, null, 0);
+                displayBitmap.Save(Path.Combine(SaveFile.InitialDirectory, TBFileName.Text + ".bmp"));
 
                 //Export CSV
-                using (var streamWriter = new StreamWriter(Path.Combine(_path, "DefectList.csv"), false))
+                using (var streamWriter = new StreamWriter(Path.Combine(SaveFile.InitialDirectory, TBFileName.Text + ".csv"), false))
                 {
                     //headers
                     for (int i = 0; i < defectTable.Columns.Count; i++)
@@ -648,71 +664,75 @@ namespace CogDrawTool
             shapeContainer.Clear();
 
             //Load vpp file
-            string path = Path.Combine(_path, "Serialize.vpp");
-            CogCompositeShape loadedCompositeShape = (CogCompositeShape)CogSerializer.LoadObjectFromFile(path);
-            CogGraphicChildren shapes = loadedCompositeShape.Shapes;
-
-            for (int i = 0; i < shapes.Count; i++)
+            string vppPath = Path.Combine(SaveFile.InitialDirectory, TBFileName.Text + ".vpp");
+            string csvPath = Path.Combine(SaveFile.InitialDirectory, TBFileName.Text + ".csv");
+            if (File.Exists(vppPath) && File.Exists(csvPath))
             {
-                if (shapes[i].GetType() == typeof(CogRectangleAffine))
-                {
-                    cogDisplay1.InteractiveGraphics.Add((CogRectangleAffine)shapes[i], "DefectRect", false);
-                    shapeContainer.Add((CogRectangleAffine)shapes[i]);
-                }
-                else if (shapes[i].GetType() == typeof(CogGraphicLabel))
-                {
-                    cogDisplay1.InteractiveGraphics.Add((CogGraphicLabel)shapes[i], "Annotation", false);
-                    shapeContainer.Add((CogGraphicLabel)shapes[i]);
-                }
-                else if (shapes[i].GetType() == typeof(CogPointMarker))
-                {
-                    cogDisplay1.InteractiveGraphics.Add((CogPointMarker)shapes[i], "Point", false);
-                    shapeContainer.Add((CogPointMarker)shapes[i]);
-                }
-                else if (shapes[i].GetType() == typeof(CogLineSegment))
-                {
-                    cogDisplay1.InteractiveGraphics.Add((CogLineSegment)shapes[i], "Line", false);
-                    shapeContainer.Add((CogLineSegment)shapes[i]);
-                }
-                else if (shapes[i].GetType() == typeof(CogCompositeShape))
-                {
-                    CogCompositeShape compositeShape = (CogCompositeShape)shapes[i];
-                    
-                    if (compositeShape.ID == 5)
-                    {
-                        for (int j = 0; j < compositeShape.Shapes.Count; j+=2)
-                        {
-                            compositeShape.Shapes[j].Changed += Dot_Changed;
-                        }
-                    }
-                    else if (compositeShape.ID == 6)
-                    {
-                        for (int j = 0; j < compositeShape.Shapes.Count; j += 2)
-                        {
-                            compositeShape.Shapes[j].Changed += Dot_Changed;
-                        }
-                    }
-                    else if (compositeShape.ID == 7)
-                    {
-                        compositeShape.Shapes[1].Changed += Circle_Changed;
-                    }
-                    else if (compositeShape.ID == 10)
-                    {
-                        compositeShape.Shapes[0].Changed += TwoCircleLength_Changed;
-                        compositeShape.Shapes[2].Changed += TwoCircleLength_Changed;
-                    }
-                    //Add them after the changes are made
-                    cogDisplay1.InteractiveGraphics.Add(compositeShape, "compositeShape", false);
-                    shapeContainer.Add(compositeShape);
-                }
-            }
+                CogCompositeShape loadedCompositeShape = (CogCompositeShape)CogSerializer.LoadObjectFromFile(vppPath);
+                CogGraphicChildren shapes = loadedCompositeShape.Shapes;
 
-            //Load csv file
-            var reader = new StreamReader(Path.Combine(_path, "DefectList.csv"));
-            var csv = new CsvReader(reader, CultureInfo.InvariantCulture);
-            using (var dr = new CsvDataReader(csv))
-            {
-                defectTable.Load(dr);
+                for (int i = 0; i < shapes.Count; i++)
+                {
+                    if (shapes[i].GetType() == typeof(CogRectangleAffine))
+                    {
+                        cogDisplay1.InteractiveGraphics.Add((CogRectangleAffine)shapes[i], "DefectRect", false);
+                        shapeContainer.Add((CogRectangleAffine)shapes[i]);
+                    }
+                    else if (shapes[i].GetType() == typeof(CogGraphicLabel))
+                    {
+                        cogDisplay1.InteractiveGraphics.Add((CogGraphicLabel)shapes[i], "Annotation", false);
+                        shapeContainer.Add((CogGraphicLabel)shapes[i]);
+                    }
+                    else if (shapes[i].GetType() == typeof(CogPointMarker))
+                    {
+                        cogDisplay1.InteractiveGraphics.Add((CogPointMarker)shapes[i], "Point", false);
+                        shapeContainer.Add((CogPointMarker)shapes[i]);
+                    }
+                    else if (shapes[i].GetType() == typeof(CogLineSegment))
+                    {
+                        cogDisplay1.InteractiveGraphics.Add((CogLineSegment)shapes[i], "Line", false);
+                        shapeContainer.Add((CogLineSegment)shapes[i]);
+                    }
+                    else if (shapes[i].GetType() == typeof(CogCompositeShape))
+                    {
+                        CogCompositeShape compositeShape = (CogCompositeShape)shapes[i];
+
+                        if (compositeShape.ID == 5)
+                        {
+                            for (int j = 0; j < compositeShape.Shapes.Count; j += 2)
+                            {
+                                compositeShape.Shapes[j].Changed += Dot_Changed;
+                            }
+                        }
+                        else if (compositeShape.ID == 6)
+                        {
+                            for (int j = 0; j < compositeShape.Shapes.Count; j += 2)
+                            {
+                                compositeShape.Shapes[j].Changed += Dot_Changed;
+                            }
+                        }
+                        else if (compositeShape.ID == 7)
+                        {
+                            compositeShape.Shapes[1].Changed += Circle_Changed;
+                        }
+                        else if (compositeShape.ID == 10)
+                        {
+                            compositeShape.Shapes[0].Changed += TwoCircleLength_Changed;
+                            compositeShape.Shapes[2].Changed += TwoCircleLength_Changed;
+                        }
+                        //Add them after the changes are made
+                        cogDisplay1.InteractiveGraphics.Add(compositeShape, "compositeShape", false);
+                        shapeContainer.Add(compositeShape);
+                    }
+                }
+
+                //Load csv file
+                var reader = new StreamReader(Path.Combine(SaveFile.InitialDirectory, TBFileName.Text + ".csv"));
+                var csv = new CsvReader(reader, CultureInfo.InvariantCulture);
+                using (var dr = new CsvDataReader(csv))
+                {
+                    defectTable.Load(dr);
+                }
             }
         }
 
@@ -1799,6 +1819,14 @@ namespace CogDrawTool
 
             if (RBtnLineColor.Checked) { lineColor = color; RBtnLineColor.BackColor = p.BackColor; }
             else if (RBtnDotColor.Checked) { dotColor = color; RBtnDotColor.BackColor = p.BackColor; }
+        }
+
+        private void btnSelectPath_Click(object sender, EventArgs e)
+        {
+            if (SaveFile.ShowDialog() == CommonFileDialogResult.Ok)
+            {
+                SaveFile.InitialDirectory = SaveFile.FileName;
+            }
         }
     }
 }
