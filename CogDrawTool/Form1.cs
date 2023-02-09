@@ -593,36 +593,16 @@ namespace CogDrawTool
             container.CompositionMode = CogCompositeShapeCompositionModeConstants.Freeform;
             
             //Add each shapes into CompositeShape
-            //Must create a new instance of an object because one shape
-            //cannot be in multiple container
             for (int i = 0; i < shapeContainer.Count; i++)
             {
-                if (shapeContainer[i].GetType() == typeof(CogRectangleAffine))
-                {
-                    container.Shapes.Add(new CogRectangleAffine((CogRectangleAffine)shapeContainer[i]));
-                }
-                else if (shapeContainer[i].GetType() == typeof(CogLineSegment))
-                {
-                    container.Shapes.Add(new CogLineSegment((CogLineSegment)shapeContainer[i]));
-                }
-                else if (shapeContainer[i].GetType() == typeof(CogPointMarker))
-                {
-                    container.Shapes.Add(new CogPointMarker((CogPointMarker)shapeContainer[i]));
-                }
-                else if (shapeContainer[i].GetType() == typeof(CogGraphicLabel))
-                {
-                    container.Shapes.Add(new CogGraphicLabel((CogGraphicLabel)shapeContainer[i]));
-                }
-                else if (shapeContainer[i].GetType() == typeof(CogCompositeShape))
-                {
-                    container.Shapes.Add(new CogCompositeShape((CogCompositeShape)shapeContainer[i]));
-                }
+                container.Shapes.Add(shapeContainer[i]);
             }
             
             if (container.Shapes.Count > 0)
             {
                 //Export vpp
                 CogSerializer.SaveObjectToFile(container, Path.Combine(SaveFile.InitialDirectory, TBFileName.Text + ".vpp"));
+                container.Dispose();
 
                 //Export bmp
                 Bitmap displayBitmap = (Bitmap)cogDisplay1.CreateContentBitmap(
@@ -731,6 +711,11 @@ namespace CogDrawTool
                         else if (compositeShape.ID == 7)
                         {
                             compositeShape.Shapes[1].Changed += Circle_Changed;
+                        }
+                        else if (compositeShape.ID == 8)
+                        {
+                            compositeShape.Shapes[0].Changed += TwoLineAngle_Changed;
+                            compositeShape.Shapes[1].Changed += TwoLineAngle_Changed;
                         }
                         else if (compositeShape.ID == 10)
                         {
@@ -1087,7 +1072,7 @@ namespace CogDrawTool
                         cogLineSegment.TipText = string.Format("Defect No: {0}", shapeContainer.Count);
                         cogLineSegment.LineWidthInScreenPixels = lineWidth;
                         cogLineSegment.Color = lineColor;
-                        cogLineSegment.Changed += PerpLengthLine_Changed;
+                        //cogLineSegment.Changed += PerpLengthLine_Changed;
                         cogLineSegment.SetStartEnd(multiToolPositions[0].Item1,
                             multiToolPositions[0].Item2, multiToolPositions[1].Item1,
                             multiToolPositions[1].Item2);
@@ -1122,7 +1107,7 @@ namespace CogDrawTool
                         perpLine.TipText = string.Format("Defect No: {0}", shapeContainer.Count);
                         perpLine.LineWidthInScreenPixels = lineWidth;
                         perpLine.Color = dotColor;
-                        perpLine.Changed += PerpLengthLine_Changed;
+                        //perpLine.Changed += PerpLengthLine_Changed;
                         perpLine.SetStartEnd(mappedX, mappedY, intersectX, intersectY);
                         compositeShape.Shapes.Add(perpLine);
 
