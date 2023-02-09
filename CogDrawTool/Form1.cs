@@ -593,9 +593,30 @@ namespace CogDrawTool
             container.CompositionMode = CogCompositeShapeCompositionModeConstants.Freeform;
             
             //Add each shapes into CompositeShape
+            //Must create a new instance of an object because one shape
+            //cannot be in multiple container
             for (int i = 0; i < shapeContainer.Count; i++)
             {
-                container.Shapes.Add(shapeContainer[i]);
+                if (shapeContainer[i].GetType() == typeof(CogRectangleAffine))
+                {
+                    container.Shapes.Add(new CogRectangleAffine((CogRectangleAffine)shapeContainer[i]));
+                }
+                else if (shapeContainer[i].GetType() == typeof(CogLineSegment))
+                {
+                    container.Shapes.Add(new CogLineSegment((CogLineSegment)shapeContainer[i]));
+                }
+                else if (shapeContainer[i].GetType() == typeof(CogPointMarker))
+                {
+                    container.Shapes.Add(new CogPointMarker((CogPointMarker)shapeContainer[i]));
+                }
+                else if (shapeContainer[i].GetType() == typeof(CogGraphicLabel))
+                {
+                    container.Shapes.Add(new CogGraphicLabel((CogGraphicLabel)shapeContainer[i]));
+                }
+                else if (shapeContainer[i].GetType() == typeof(CogCompositeShape))
+                {
+                    container.Shapes.Add(new CogCompositeShape((CogCompositeShape)shapeContainer[i]));
+                }
             }
             
             if (container.Shapes.Count > 0)
@@ -653,11 +674,7 @@ namespace CogDrawTool
         }
 
         private void btnImport_Click(object sender, EventArgs e)
-        {
-            //TODO: Have to load the image again to show the shapes, but why.
-            Bitmap bmp = new Bitmap(Path.Combine(_path, "Screenshot_20230103_020226.png"));
-            DisplayImage(bmp);
-           
+        {   
             //Clear the display, shapeContainer and datatable.
             cogDisplay1.InteractiveGraphics.Clear();
             CreateDefectListTable();
