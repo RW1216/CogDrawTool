@@ -82,7 +82,6 @@ namespace CogDrawTool
             this.pictureBox10 = new System.Windows.Forms.PictureBox();
             this.pictureBox9 = new System.Windows.Forms.PictureBox();
             this.label3 = new System.Windows.Forms.Label();
-            this.pictureBox11 = new System.Windows.Forms.PictureBox();
             this.label2 = new System.Windows.Forms.Label();
             this.RBtnLineColor = new System.Windows.Forms.RadioButton();
             this.pictureBox8 = new System.Windows.Forms.PictureBox();
@@ -97,6 +96,8 @@ namespace CogDrawTool
             this.btnSelectPath = new System.Windows.Forms.Button();
             this.TBFileName = new System.Windows.Forms.TextBox();
             this.label4 = new System.Windows.Forms.Label();
+            this.btnColor = new System.Windows.Forms.Button();
+            this.colorDialog1 = new System.Windows.Forms.ColorDialog();
             ((System.ComponentModel.ISupportInitialize)(this.cogDisplay1)).BeginInit();
             this.toolStrip1.SuspendLayout();
             this.panel1.SuspendLayout();
@@ -112,7 +113,6 @@ namespace CogDrawTool
             ((System.ComponentModel.ISupportInitialize)(this.pictureBox12)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.pictureBox10)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.pictureBox9)).BeginInit();
-            ((System.ComponentModel.ISupportInitialize)(this.pictureBox11)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.pictureBox8)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.pictureBox2)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.PBRed)).BeginInit();
@@ -634,13 +634,13 @@ namespace CogDrawTool
             // 
             // groupBox3
             // 
+            this.groupBox3.Controls.Add(this.btnColor);
             this.groupBox3.Controls.Add(this.pictureBox13);
             this.groupBox3.Controls.Add(this.pictureBox12);
             this.groupBox3.Controls.Add(this.RBtnDotColor);
             this.groupBox3.Controls.Add(this.pictureBox10);
             this.groupBox3.Controls.Add(this.pictureBox9);
             this.groupBox3.Controls.Add(this.label3);
-            this.groupBox3.Controls.Add(this.pictureBox11);
             this.groupBox3.Controls.Add(this.label2);
             this.groupBox3.Controls.Add(this.RBtnLineColor);
             this.groupBox3.Controls.Add(this.pictureBox8);
@@ -662,7 +662,7 @@ namespace CogDrawTool
             // pictureBox13
             // 
             this.pictureBox13.BackColor = System.Drawing.Color.Purple;
-            this.pictureBox13.Location = new System.Drawing.Point(67, 129);
+            this.pictureBox13.Location = new System.Drawing.Point(68, 129);
             this.pictureBox13.Name = "pictureBox13";
             this.pictureBox13.Size = new System.Drawing.Size(25, 25);
             this.pictureBox13.TabIndex = 25;
@@ -672,7 +672,7 @@ namespace CogDrawTool
             // pictureBox12
             // 
             this.pictureBox12.BackColor = System.Drawing.Color.DarkGreen;
-            this.pictureBox12.Location = new System.Drawing.Point(37, 191);
+            this.pictureBox12.Location = new System.Drawing.Point(6, 191);
             this.pictureBox12.Name = "pictureBox12";
             this.pictureBox12.Size = new System.Drawing.Size(25, 25);
             this.pictureBox12.TabIndex = 24;
@@ -693,7 +693,7 @@ namespace CogDrawTool
             // pictureBox10
             // 
             this.pictureBox10.BackColor = System.Drawing.Color.LightGray;
-            this.pictureBox10.Location = new System.Drawing.Point(67, 191);
+            this.pictureBox10.Location = new System.Drawing.Point(36, 191);
             this.pictureBox10.Name = "pictureBox10";
             this.pictureBox10.Size = new System.Drawing.Size(25, 25);
             this.pictureBox10.TabIndex = 14;
@@ -703,7 +703,7 @@ namespace CogDrawTool
             // pictureBox9
             // 
             this.pictureBox9.BackColor = System.Drawing.Color.DarkGray;
-            this.pictureBox9.Location = new System.Drawing.Point(6, 222);
+            this.pictureBox9.Location = new System.Drawing.Point(68, 193);
             this.pictureBox9.Name = "pictureBox9";
             this.pictureBox9.Size = new System.Drawing.Size(25, 25);
             this.pictureBox9.TabIndex = 13;
@@ -718,16 +718,6 @@ namespace CogDrawTool
             this.label3.Size = new System.Drawing.Size(31, 16);
             this.label3.TabIndex = 11;
             this.label3.Text = "Dot:";
-            // 
-            // pictureBox11
-            // 
-            this.pictureBox11.BackColor = System.Drawing.Color.DarkRed;
-            this.pictureBox11.Location = new System.Drawing.Point(6, 160);
-            this.pictureBox11.Name = "pictureBox11";
-            this.pictureBox11.Size = new System.Drawing.Size(25, 25);
-            this.pictureBox11.TabIndex = 15;
-            this.pictureBox11.TabStop = false;
-            this.pictureBox11.Click += new System.EventHandler(this.PBColor_Click);
             // 
             // label2
             // 
@@ -782,7 +772,7 @@ namespace CogDrawTool
             // pictureBox5
             // 
             this.pictureBox5.BackColor = System.Drawing.Color.Black;
-            this.pictureBox5.Location = new System.Drawing.Point(37, 222);
+            this.pictureBox5.Location = new System.Drawing.Point(6, 222);
             this.pictureBox5.Name = "pictureBox5";
             this.pictureBox5.Size = new System.Drawing.Size(25, 25);
             this.pictureBox5.TabIndex = 5;
@@ -812,7 +802,7 @@ namespace CogDrawTool
             // pictureBox6
             // 
             this.pictureBox6.BackColor = System.Drawing.Color.Cyan;
-            this.pictureBox6.Location = new System.Drawing.Point(68, 160);
+            this.pictureBox6.Location = new System.Drawing.Point(37, 160);
             this.pictureBox6.Name = "pictureBox6";
             this.pictureBox6.Size = new System.Drawing.Size(25, 25);
             this.pictureBox6.TabIndex = 6;
@@ -822,7 +812,7 @@ namespace CogDrawTool
             // pictureBox3
             // 
             this.pictureBox3.BackColor = System.Drawing.Color.Blue;
-            this.pictureBox3.Location = new System.Drawing.Point(37, 160);
+            this.pictureBox3.Location = new System.Drawing.Point(6, 160);
             this.pictureBox3.Name = "pictureBox3";
             this.pictureBox3.Size = new System.Drawing.Size(25, 25);
             this.pictureBox3.TabIndex = 3;
@@ -832,7 +822,7 @@ namespace CogDrawTool
             // pictureBox7
             // 
             this.pictureBox7.BackColor = System.Drawing.Color.Green;
-            this.pictureBox7.Location = new System.Drawing.Point(6, 191);
+            this.pictureBox7.Location = new System.Drawing.Point(68, 160);
             this.pictureBox7.Name = "pictureBox7";
             this.pictureBox7.Size = new System.Drawing.Size(25, 25);
             this.pictureBox7.TabIndex = 7;
@@ -864,6 +854,16 @@ namespace CogDrawTool
             this.label4.Size = new System.Drawing.Size(69, 16);
             this.label4.TabIndex = 26;
             this.label4.Text = "File name:";
+            // 
+            // btnColor
+            // 
+            this.btnColor.Location = new System.Drawing.Point(37, 224);
+            this.btnColor.Name = "btnColor";
+            this.btnColor.Size = new System.Drawing.Size(56, 23);
+            this.btnColor.TabIndex = 27;
+            this.btnColor.Text = "More";
+            this.btnColor.UseVisualStyleBackColor = true;
+            this.btnColor.Click += new System.EventHandler(this.btnColor_Click);
             // 
             // DrawToolFrm
             // 
@@ -911,7 +911,6 @@ namespace CogDrawTool
             ((System.ComponentModel.ISupportInitialize)(this.pictureBox12)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.pictureBox10)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.pictureBox9)).EndInit();
-            ((System.ComponentModel.ISupportInitialize)(this.pictureBox11)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.pictureBox8)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.pictureBox2)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.PBRed)).EndInit();
@@ -987,12 +986,13 @@ namespace CogDrawTool
         private System.Windows.Forms.Label label3;
         private System.Windows.Forms.PictureBox pictureBox13;
         private System.Windows.Forms.PictureBox pictureBox12;
-        private System.Windows.Forms.PictureBox pictureBox11;
         private System.Windows.Forms.PictureBox pictureBox10;
         private System.Windows.Forms.PictureBox pictureBox9;
         private System.Windows.Forms.Button btnSelectPath;
         private System.Windows.Forms.TextBox TBFileName;
         private System.Windows.Forms.Label label4;
+        private System.Windows.Forms.Button btnColor;
+        private System.Windows.Forms.ColorDialog colorDialog1;
     }
 }
 

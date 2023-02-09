@@ -1802,25 +1802,22 @@ namespace CogDrawTool
         private void PBColor_Click(object sender, EventArgs e)
         {
             PictureBox p = (PictureBox)sender;
-            CogColorConstants color = CogColorConstants.Red;
+            int r = p.BackColor.R;
+            int g = p.BackColor.G;
+            int b = p.BackColor.B;
+            //OLE is in BGR format
+            int OLE = ((b * 256 * 256) + (g * 256) + r);
 
-            if (p.BackColor == Color.Red) { color = CogColorConstants.Red; }
-            else if (p.BackColor == Color.Yellow) { color = CogColorConstants.Yellow; }
-            else if (p.BackColor == Color.Magenta) { color = CogColorConstants.Magenta; }
-            else if (p.BackColor == Color.Blue) { color = CogColorConstants.Blue; }
-            else if (p.BackColor == Color.White) { color = CogColorConstants.White; }
-            else if (p.BackColor == Color.Black) { color = CogColorConstants.Black; }
-            else if (p.BackColor == Color.Cyan) { color = CogColorConstants.Cyan; }
-            else if (p.BackColor == Color.Green) { color = CogColorConstants.Green; }
-            else if (p.BackColor == Color.Orange) { color = CogColorConstants.Orange; }
-            else if (p.BackColor == Color.DarkGray) { color = CogColorConstants.DarkGrey; }
-            else if (p.BackColor == Color.LightGray) { color = CogColorConstants.LightGrey; }
-            else if (p.BackColor == Color.DarkRed) { color = CogColorConstants.DarkRed; }
-            else if (p.BackColor == Color.DarkGreen) { color = CogColorConstants.DarkGreen; } 
-            else if (p.BackColor == Color.Purple) { color = CogColorConstants.Purple; }
-
-            if (RBtnLineColor.Checked) { lineColor = color; RBtnLineColor.BackColor = p.BackColor; }
-            else if (RBtnDotColor.Checked) { dotColor = color; RBtnDotColor.BackColor = p.BackColor; }
+            if (RBtnLineColor.Checked)
+            {
+                lineColor = (CogColorConstants)(OLE);
+                RBtnLineColor.BackColor = p.BackColor;
+            }
+            else if (RBtnDotColor.Checked)
+            {
+                dotColor = (CogColorConstants)(OLE);
+                RBtnDotColor.BackColor = p.BackColor;
+            }
         }
 
         private void btnSelectPath_Click(object sender, EventArgs e)
@@ -1828,6 +1825,28 @@ namespace CogDrawTool
             if (SaveFile.ShowDialog() == CommonFileDialogResult.Ok)
             {
                 SaveFile.InitialDirectory = SaveFile.FileName;
+            }
+        }
+
+        private void btnColor_Click(object sender, EventArgs e)
+        {
+            if (colorDialog1.ShowDialog() == DialogResult.OK)
+            {
+                int r = colorDialog1.Color.R;
+                int g = colorDialog1.Color.G;
+                int b = colorDialog1.Color.B;
+                int OLE = ((b * 256 * 256) + (g * 256) + r);
+
+                if (RBtnLineColor.Checked)
+                {
+                    lineColor = (CogColorConstants)(OLE);
+                    RBtnLineColor.BackColor = colorDialog1.Color;
+                }
+                else if (RBtnDotColor.Checked)
+                {
+                    dotColor = (CogColorConstants)(OLE);
+                    RBtnDotColor.BackColor = colorDialog1.Color;
+                }
             }
         }
     }
