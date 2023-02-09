@@ -1802,11 +1802,12 @@ namespace CogDrawTool
         private void PBColor_Click(object sender, EventArgs e)
         {
             PictureBox p = (PictureBox)sender;
-            int r = p.BackColor.R;
+            /*int r = p.BackColor.R;
             int g = p.BackColor.G;
             int b = p.BackColor.B;
             //OLE is in BGR format
-            int OLE = ((b * 256 * 256) + (g * 256) + r);
+            int OLE = ((b * 256 * 256) + (g * 256) + r);*/
+            int OLE = ColorTranslator.ToOle(p.BackColor);
 
             if (RBtnLineColor.Checked)
             {
@@ -1832,11 +1833,8 @@ namespace CogDrawTool
         {
             if (colorDialog1.ShowDialog() == DialogResult.OK)
             {
-                int r = colorDialog1.Color.R;
-                int g = colorDialog1.Color.G;
-                int b = colorDialog1.Color.B;
-                int OLE = ((b * 256 * 256) + (g * 256) + r);
-
+                int OLE = ColorTranslator.ToOle(colorDialog1.Color);
+                
                 if (RBtnLineColor.Checked)
                 {
                     lineColor = (CogColorConstants)(OLE);
