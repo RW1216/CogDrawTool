@@ -3,15 +3,15 @@
 This program was created during my internship at QES Mechatronic in 2023. 
 
 Functionalities:
+-Annotate images
 -Import/Export images
    -annotation metadata is also included
--Annotate images
--Annocation metadata will be shown on the table in the right section of the program
+-Annotation metadata will be shown on the table in the right section of the program
+-Change the color of the annotation
 
 Types of annotations:
--Point
--Line
--
+-Rectangle, text, point, line, arrow, draw
+-2-point lenght, multi-point length, radius, triangle angle, 2-line angle, perpendicular length, 2-circle length
 
 Technologies used:
 IDE - Visual Studio
