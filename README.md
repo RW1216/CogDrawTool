@@ -6,7 +6,7 @@ This program was created during my internship at QES Mechatronic in 2023.
 - Annotate images  
 - Import/Export images  
    - annotation metadata is also included  
-- Annotation metadata will be shown on the table in the right section of the program  
+   - Annotation metadata will be shown on the table in the right section of the program  
 - Change the color of the annotation  
 
 ### Types of annotations:
@@ -18,5 +18,5 @@ This program was created during my internship at QES Mechatronic in 2023.
 - Framework: Windows Forms (to create windows applications)  
 - Language: C#  
 - Libraries: Cognex Vision Pro  
-
+  
 ![My Image](Docs/Annotation%20Program%20screen.png)
