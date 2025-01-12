@@ -19,4 +19,4 @@ Framework - Windows Forms (to create windows applications)
 Language - C#
 Libraries - Cognex Vision Pro
 
-![My Image](Docs/Annotation Program screen.png)
+![My Image](Docs/Annotation%20Program%20screen.png)
