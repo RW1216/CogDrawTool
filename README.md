@@ -7,7 +7,7 @@ This program was created during my internship at QES Mechatronic in 2023.
 - Import/Export images  
    - annotation metadata is also included  
    - Annotation metadata will be shown on the table in the right section of the program  
-- Change the color of the annotation  
+- Change the color of annotation  
 
 ### Types of annotations:
 - Rectangle, text, point, line, arrow, draw  
