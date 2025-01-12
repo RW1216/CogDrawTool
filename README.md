@@ -14,7 +14,7 @@ Types of annotations:
 -
 
 Technologies used:
-IDE - 
+IDE - Visual Studio
 Framework - Windows Forms (to create windows applications)
 Language - C#
 Libraries - Cognex Vision Pro
